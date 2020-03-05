@@ -4,7 +4,7 @@
 It is designed to help users in daily situations.
 
 Latest version:
-**3.0-alfphaDemo2**
+**3.0-stable**
 
 ## Features
 - Schedule tool
