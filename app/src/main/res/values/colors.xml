@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="colorPrimary">#004B85</color>
+	<color name="colorPrimaryDark">#003966</color>
+	<color name="colorAccent">#E10A85B6</color>
+
+	<color name="colorBackground">#005C96</color>
+
+	<color name="logo_red">#EF3526</color>
+	<color name="logo_blue">#004B85</color>
+	<color name="logo_white">#F1F1F1</color>
+
+	<color name="underline">#636363</color>
+	<color name="line_color">#005C96</color>
+	<color name="line_color_inactive">#5BB8FF</color>
+
+	<color name="wallet_holo_blue_light">#ff33b5e5</color>
+</resources>

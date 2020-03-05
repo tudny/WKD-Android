@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:background="@drawable/custom_border"
+	android:divider="@drawable/custom_divider"
+	android:showDividers="middle">
+
+	<TextView
+		android:id="@+id/reliefTextView"
+		style="@style/TicketRowElement"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:text="Relief"
+		android:textStyle="bold" />
+
+	<TextView
+		android:id="@+id/firstZoneTextView"
+		style="@style/TicketRowElement"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:text="firstZone" />
+
+	<TextView
+		android:id="@+id/secondZoneTextView"
+		style="@style/TicketRowElement"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:text="secondZone" />
+
+	<TextView
+		android:id="@+id/thirdZoneTextView"
+		style="@style/TicketRowElement"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+
+		android:text="thirdZone" />
+</LinearLayout>

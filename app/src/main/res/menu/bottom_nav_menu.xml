@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item
+		android:id="@+id/navigation_schedule"
+		android:icon="@drawable/ic_home_black_24dp"
+		android:title="@string/schedule_label" />
+
+	<item
+		android:id="@+id/navigation_tickets"
+		android:icon="@drawable/ic_attach_money_black_24dp"
+		android:title="@string/tickets_label" />
+
+	<item
+		android:id="@+id/navigation_stations"
+		android:icon="@drawable/ic_train_black_24dp"
+		android:title="@string/stations_label" />
+
+</menu>

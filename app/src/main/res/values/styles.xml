@@ -1,0 +1,67 @@
+<resources>
+
+	<!-- Base application theme. -->
+	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+		<!-- Customize your theme here. -->
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+
+		<item name="colorControlNormal">@android:color/white</item>
+		<item name="colorControlActivated">@android:color/white</item>
+		<item name="colorControlHighlight">@color/colorAccent</item>
+	</style>
+
+	<style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+		<item name="android:windowBackground">@drawable/splash_screen</item>
+	</style>
+
+	<style name="MyTextInput">
+		<item name="android:layout_margin">@dimen/text_input_margin</item>
+		<item name="android:clickable">false</item>
+		<item name="android:cursorVisible">false</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textColor">@android:color/white</item>
+		<item name="android:inputType">textNoSuggestions</item>
+		<item name="android:focusable">false</item>
+	</style>
+
+	<style name="DatePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+		<item name="android:colorAccent">@color/colorPrimary</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColorPrimaryInverse">@android:color/white</item>
+		<item name="colorControlActivated">@color/colorPrimary</item>
+	</style>
+
+	<style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+		<item name="colorAccent">@color/colorPrimary</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+
+	<style name="MyTextInputWhite">
+		<item name="android:layout_margin">10dp</item>
+		<item name="android:clickable">false</item>
+		<item name="android:cursorVisible">false</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textColor">@color/logo_blue</item>
+		<item name="android:inputType">textNoSuggestions</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:backgroundTint">@color/logo_blue</item>
+		<item name="android:focusable">false</item>
+	</style>
+
+	<style name="TicketRowElement">
+		<item name="android:padding">4dp</item>
+	</style>
+
+	<style name="TicketsDividerLayout">
+		<item name="android:background">@color/colorBackground</item>
+		<item name="android:padding">10dp</item>
+		<item name="android:textColor">@color/logo_white</item>
+		<item name="android:textSize">20sp</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+
+</resources>

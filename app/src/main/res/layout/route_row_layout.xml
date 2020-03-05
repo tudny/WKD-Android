@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:orientation="horizontal" android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent">
+
+		<LinearLayout
+			android:layout_width="16dp"
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
+
+			<ImageView
+				android:id="@+id/line_of_distance_image_1"
+				android:layout_width="16dp"
+				android:layout_height="match_parent"
+				android:contentDescription="@string/line"
+				android:layout_weight="1"/>
+
+			<ImageView
+				android:id="@+id/line_of_distance_image_2"
+				android:layout_width="16dp"
+				android:layout_height="match_parent"
+				android:contentDescription="@string/line"
+				android:layout_weight="1"/>
+
+		</LinearLayout>
+
+		<ImageView
+			android:id="@+id/line_of_distance_dot"
+			android:layout_width="16dp"
+			android:layout_height="16dp"
+			android:layout_marginStart="16dp"
+			android:layout_marginEnd="16dp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			android:contentDescription="@string/dot" />
+
+
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="horizontal">
+
+
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:orientation="vertical">
+
+				<TextView
+					android:id="@+id/station_name_text_view"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginBottom="2dp"
+					android:layout_weight="20"
+					android:fontFamily="sans-serif-medium"
+					android:gravity="start"
+					android:text="STATION"
+					android:textSize="22sp" />
+
+				<TextView
+					android:id="@+id/arrival_text_view"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_margin="8dp"
+					android:layout_weight="40"
+					android:gravity="start"
+					android:textSize="16sp"
+					android:text="00:00" />
+
+			</LinearLayout>
+
+			<TextView
+				android:id="@+id/departure_text_view"
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_margin="8dp"
+				android:layout_weight="40"
+				android:paddingEnd="4dp"
+				android:paddingStart="0dp"
+				android:gravity="end|center_vertical"
+				android:textSize="20sp"
+				android:text="00:00" />
+
+		</LinearLayout>
+
+		<View
+			android:paddingEnd="10dp"
+			android:paddingStart="10dp"
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:background="@drawable/custom_divider_gray"
+			android:contentDescription="@string/divider" />
+
+	</LinearLayout>
+
+
+</LinearLayout>

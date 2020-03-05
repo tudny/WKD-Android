@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/mobile_navigation"
+	app:startDestination="@+id/navigation_schedule">
+
+	<fragment
+		android:id="@+id/navigation_schedule"
+		android:name="com.tudny.wkdapp.ui.schedule.ScheduleFragment"
+		android:label="@string/schedule_label"
+		tools:layout="@layout/fragment_schedule" />
+
+	<fragment
+		android:id="@+id/navigation_tickets"
+		android:name="com.tudny.wkdapp.ui.tickets.TicketsFragment"
+		android:label="@string/tickets_label"
+		tools:layout="@layout/fragment_tickets" />
+
+	<fragment
+		android:id="@+id/navigation_stations"
+		android:name="com.tudny.wkdapp.ui.stations.StationsFragment"
+		android:label="@string/stations_label"
+		tools:layout="@layout/fragment_stations" />
+
+	<activity
+		android:id="@+id/navigation_settings"
+		android:name="com.tudny.wkdapp.SettingsActivity"
+		android:label="@string/settings_label"
+		tools:layout="@layout/settings_activity" />
+</navigation>

@@ -1,0 +1,82 @@
+<resources>
+	<string name="title_home">Home</string>
+	<string name="title_dashboard">Dashboard</string>
+	<string name="title_notifications">Notifications</string>
+	<string name="schedule_label">Schedule</string>
+	<string name="app_name">WKD Application</string>
+	<string name="navigation_drawer_open">Open navigation drawer</string>
+	<string name="navigation_drawer_close">Close navigation drawer</string>
+	<string name="nav_header_desc">Navigation header</string>
+	<string name="action_settings">Settings</string>
+
+	<string name="menu_schedule">Schedule</string>
+	<string name="menu_settings">Settings</string>
+	<string name="menu_setup">Setup</string>
+
+	<string name="menu_gallery">Gallery</string>
+	<string name="menu_slideshow">Slideshow</string>
+	<string name="menu_tools">Tools</string>
+	<string name="menu_share">Share</string>
+	<string name="menu_send">Send</string>
+	<string name="from">From</string>
+	<string name="to">To</string>
+	<string name="time">Time</string>
+	<string name="date">Date</string>
+	<string name="today">Today</string>
+	<string name="tomorrow">Tomorrow</string>
+	<string name="now">Now</string>
+	<string name="to_late">To late</string>
+	<string name="departures">Departures</string>
+	<string name="h">h</string>
+	<string name="m">m</string>
+	<string name="searching">Searching…</string>
+	<string name="bad_input">Bad input</string>
+	<string name="tickets">Tickets</string>
+	<string name="default_base">Default Base</string>
+	<string name="default_target">Default Target</string>
+	<string name="stations">Stations</string>
+	<string name="find_nearest_station">Find</string>
+	<string name="no_station_match">No Station match</string>
+	<string name="navigate">Navigate</string>
+	<string name="no_permission">No permissions</string>
+	<string name="no_permission_or_signal">No permissions or signal</string>
+	<string name="single_tickets_table_label">Single tickets table</string>
+	<string name="season_ticket_finder_label">Season ticket finder</string>
+	<string name="ticket_type">Type of ticket</string>
+	<string name="period">Period</string>
+	<string name="relief">Relief</string>
+	<string name="direction">Direction</string>
+	<string name="price_sentence">Price: %.02f</string>
+	<string name="price">Price:</string>
+
+	<string name="title_activity_splash_screen">SplashScreen</string>
+	<string name="dummy_button">Dummy Button</string>
+	<string name="dummy_content">DUMMY\nCONTENT</string>
+	<string name="activity_route">Route</string>
+	<string name="no_train_left">No train left for this day</string>
+	<string name="dep_at">Departures at:</string>
+	<string name="dep_in">Departures in:</string>
+	<string name="reload_stopped">Location timeout</string>
+	<string name="arrives">Arrives</string>
+	<string name="line">Line</string>
+	<string name="divider">Divider</string>
+	<string name="dot">Dot</string>
+	<string name="updated_schedule">Updated schedule data</string>
+	<string name="nearest_station">Nearest station</string>
+	<string name="station_name">Station Name</string>
+	<string name="error_content">Content load error "%s"</string>
+	<string name="yesterday">Yesterday</string>
+	<string name="route_label">Route</string>
+	<string name="tickets_label">Tickets</string>
+	<string name="settings_label">Settings</string>
+	<string name="title_activity_settings">Settings</string>
+
+	<string name="default_settings_header">Default data</string>
+
+	<string name="default_base_title">Default base station</string>
+	<string name="default_base_key">default_base_key_preferences</string>
+	<string name="default_target_title">Default target station</string>
+	<string name="default_target_key">default_target_key_preferences</string>
+	<string name="stations_label">Stations</string>
+
+</resources>
