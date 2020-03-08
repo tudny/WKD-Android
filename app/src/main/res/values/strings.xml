@@ -71,12 +71,20 @@
 	<string name="settings_label">Settings</string>
 	<string name="title_activity_settings">Settings</string>
 
-	<string name="default_settings_header">Default data</string>
+	<string name="default_settings_header">Default stations</string>
 
 	<string name="default_base_title">Default base station</string>
 	<string name="default_base_key">default_base_key_preferences</string>
 	<string name="default_target_title">Default target station</string>
 	<string name="default_target_key">default_target_key_preferences</string>
 	<string name="stations_label">Stations</string>
+	<string name="settings_features">Additional features</string>
+	<string name="default_live_upgrade_key">default_live_upgrade_key_preferences</string>
+	<string name="live_update_summary">This feature automatically detects whether you are closer to home or to work.</string>
+	<string name="station_summary">Select station</string>
+	<string name="live_upgrade_title">Station Live update (beta)</string>
+	<string name="set">Set</string>
+	<string name="cancel">Cancel</string>
+	<string name="show_details">Show details</string>
 
 </resources>

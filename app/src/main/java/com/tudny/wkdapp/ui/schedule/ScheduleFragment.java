@@ -1,9 +1,11 @@
 package com.tudny.wkdapp.ui.schedule;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.VibrationEffect;
@@ -20,6 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.preference.DialogPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -63,7 +67,7 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapter.ItemClickListener{
+public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapter.ItemClickListener {
 
 	public static final String JSON_ROUTE_STRING_KEY = "json_route_string";
 	private static final String DEBUG_TAG = ScheduleFragment.class.getSimpleName();
@@ -104,6 +108,9 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 	private GestureDetectorCompat timeGestureDetector;
 	private GestureDetectorCompat fromGestureDetector;
 	private GestureDetectorCompat toGestureDetector;
+
+	private LocationListener gpsLocationListener;
+	private LocationListener mobileLocationListener;
 
 	private Vibrator singleClickVibration;
 	private static final int vibrationDurationForClick = 25;
@@ -165,6 +172,10 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 
 	private void loadDefaultValues() {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+//		Boolean live = sharedPreferences.getBoolean(getString(R.string.default_live_upgrade_key), Boolean.FALSE);
+//		// ToODO: handle live feature on/off
+
 		defaultFromStation = Station.choseByNumber(Integer.parseInt(sharedPreferences.getString(getString(R.string.default_base_key), "")));
 		defaultToStation = Station.choseByNumber(Integer.parseInt(sharedPreferences.getString(getString(R.string.default_target_key), "")));
 	}

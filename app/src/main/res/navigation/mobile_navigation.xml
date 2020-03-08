@@ -8,19 +8,19 @@
 	<fragment
 		android:id="@+id/navigation_schedule"
 		android:name="com.tudny.wkdapp.ui.schedule.ScheduleFragment"
-		android:label="@string/schedule_label"
+		android:label="@string/app_name"
 		tools:layout="@layout/fragment_schedule" />
 
 	<fragment
 		android:id="@+id/navigation_tickets"
 		android:name="com.tudny.wkdapp.ui.tickets.TicketsFragment"
-		android:label="@string/tickets_label"
+		android:label="@string/app_name"
 		tools:layout="@layout/fragment_tickets" />
 
 	<fragment
 		android:id="@+id/navigation_stations"
 		android:name="com.tudny.wkdapp.ui.stations.StationsFragment"
-		android:label="@string/stations_label"
+		android:label="@string/app_name"
 		tools:layout="@layout/fragment_stations" />
 
 	<activity

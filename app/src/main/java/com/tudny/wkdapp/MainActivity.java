@@ -1,8 +1,10 @@
 package com.tudny.wkdapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
@@ -53,13 +55,8 @@ public class MainActivity extends AppCompatActivity {
 		Log.d(DEBUG_TAG, "onCreate");
 	}
 
-	public void openNavigation(double latitude, double longitude){
-		Log.d(DEBUG_TAG, "Opening Google Maps navigation on pos(" + latitude + ", " + longitude + ")");
-		Uri googleMapsIntentUri = Uri.parse("google.navigation:q=" + latitude + ", " + longitude);
-		Intent mapIntent = new Intent(Intent.ACTION_VIEW, googleMapsIntentUri);
-		mapIntent.setPackage("com.google.android.apps.maps");
-		startActivity(mapIntent);
-	}
+	/* Moved to another class com.tudny.wkdapp.location.NavigationManager
+	public void openNavigation(double latitude, double longitude){...}*/
 
 	public DateTimeFormatter getDateFormatter() {
 		return dateFormatter;
@@ -83,30 +80,4 @@ public class MainActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		return NavigationUI.onNavDestinationSelected(item, Navigation.findNavController(this, R.id.nav_host_fragment));
 	}
-
-	/*// 30 seconds
-	public static final Long MAX_DIFF = 30L * 1000L;
-
-	@Override
-	public void onPause(){
-		lastPause = LocalDateTime.now();
-		super.onPause();
-	}
-
-	@Override
-	public void onResume(){
-		try {
-			LocalDateTime lastDateTime = lastPause;
-			LocalDateTime newDateTIme = LocalDateTime.now();
-			Long timeDiff = lastDateTime.until(newDateTIme, ChronoUnit.MILLIS);
-			if (timeDiff > MAX_DIFF) {
-				// TODO: complete what to do when application is closed for a long time
-
-				//Toast.makeText(getApplicationContext(), R.string.updated_schedule, Toast.LENGTH_SHORT).show();
-			}
-		} catch (Exception e){
-			e.printStackTrace();
-		}
-		super.onResume();
-	}*/
 }

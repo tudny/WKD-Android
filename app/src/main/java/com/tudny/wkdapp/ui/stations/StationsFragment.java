@@ -12,6 +12,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,6 +32,7 @@ import com.tudny.wkdapp.StationActivity;
 import com.tudny.wkdapp.core.Station;
 import com.tudny.wkdapp.location.GPSLocationListener;
 import com.tudny.wkdapp.location.MobileLocationListener;
+import com.tudny.wkdapp.location.NavigationManager;
 import com.tudny.wkdapp.math.WKDMath;
 import com.tudny.wkdapp.recycler.stationsRecycler.RowModel;
 import com.tudny.wkdapp.recycler.stationsRecycler.StationRecyclerAdapter;
@@ -88,16 +92,19 @@ public class StationsFragment extends Fragment implements StationRecyclerAdapter
 
 		setupUpdateStation();
 
-		Button findStationButton = Objects.requireNonNull(getView()).findViewById(R.id.find_station_button);
+		final Button findStationButton = Objects.requireNonNull(getView()).findViewById(R.id.find_station_button);
 		findStationButton.setOnClickListener(v -> {
 			findStation();
 			wasFindEverClicked = true;
 		});
-		Button navigationButton = getView().findViewById(R.id.navigate_button);
-		setNavigationButtonEnable(Boolean.FALSE);
-		navigationButton.setOnClickListener(v ->
-				((MainActivity) Objects.requireNonNull(getActivity())).openNavigation(closestStation.getLatitude(), closestStation.getLongitude())
-		);
+		final Button navigationButton = getView().findViewById(R.id.navigate_button);
+		navigationButton.setOnClickListener(v -> NavigationManager.openNavigation(closestStation.getLatitude(), closestStation.getLongitude(), Objects.requireNonNull(getActivity())));
+		try {
+			final Button detailsButton = getView().findViewById(R.id.details_button);
+			detailsButton.setOnClickListener(v -> {
+				runNewStationActivity(closestStation);
+			});
+		} catch (Exception ignore){}
 	}
 
 	private void setupUpdateStation() {
@@ -174,7 +181,7 @@ public class StationsFragment extends Fragment implements StationRecyclerAdapter
 		requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 	}
 
-	@SuppressWarnings("unused")
+	/*@SuppressWarnings("unused")
 	private void checkLocation() {
 		if(!allPermissionsOk()) requestPermissions();
 
@@ -193,7 +200,7 @@ public class StationsFragment extends Fragment implements StationRecyclerAdapter
 		if(loc != null && locM != null) System.out.println("Difference: " + WKDMath.distanceOnEarth(loc.getLatitude(), loc.getLongitude(), locM.getLatitude(), locM.getLongitude()));
 
 		System.out.println("-----------------------------------------------------");
-	}
+	}*/
 
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
@@ -232,18 +239,33 @@ public class StationsFragment extends Fragment implements StationRecyclerAdapter
 	}
 
 	private void setStationName(Station station){
+		setNavigationButtonEnable(Boolean.TRUE);
+		try {
+			setDetailsButtonEnabled(Boolean.TRUE);
+		} catch (Exception ignored){}
 		TextView stationView = Objects.requireNonNull(getView()).findViewById(R.id.station_name_text_view);
 		stationView.setText(station.getStationName());
 	}
 
 	private void setNavigationButtonEnable(Boolean enabled) {
-		Button navigationButton = Objects.requireNonNull(getView()).findViewById(R.id.navigate_button);
+		final Button navigationButton = Objects.requireNonNull(getView()).findViewById(R.id.navigate_button);
 		navigationButton.setEnabled(enabled);
 		navigationButton.setText(R.string.navigate);
 		navigationButton.invalidate();
 	}
 
+	private void setDetailsButtonEnabled(Boolean enabled){
+		final Button detailsButton = Objects.requireNonNull(getView()).findViewById(R.id.details_button);
+		detailsButton.setEnabled(enabled);
+		detailsButton.setText(R.string.show_details);
+		detailsButton.invalidate();
+	}
+
 	private void setNoPermissionText() {
+		setNavigationButtonEnable(Boolean.FALSE);
+		try {
+			setDetailsButtonEnabled(Boolean.FALSE);
+		} catch (Exception ignored){}
 		((TextView) Objects.requireNonNull(getView()).findViewById(R.id.station_name_text_view)).setText(getString(R.string.no_permission_or_signal));
 	}
 
@@ -316,10 +338,8 @@ public class StationsFragment extends Fragment implements StationRecyclerAdapter
 
 			try {
 				if (stations[0] == null) {
-					stationsFragment.setNavigationButtonEnable(Boolean.FALSE);
 					stationsFragment.setNoPermissionText();
 				} else {
-					stationsFragment.setNavigationButtonEnable(Boolean.TRUE);
 					stationsFragment.setStationName(stations[0]);
 				}
 

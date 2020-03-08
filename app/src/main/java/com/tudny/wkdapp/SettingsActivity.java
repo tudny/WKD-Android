@@ -1,10 +1,15 @@
 package com.tudny.wkdapp;
 
+import android.Manifest;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -13,8 +18,11 @@ import androidx.preference.PreferenceManager;
 import com.tudny.wkdapp.core.Station;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
+
+	public static final String DEBUG_TAG = SettingsActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +80,6 @@ public class SettingsActivity extends AppCompatActivity {
 				if(prefIndex >= 0) {
 					preference.setSummary(listPreference.getEntries()[prefIndex]);
 				}
-			} else if(preference != null) {
-				preference.setSummary(sharedPreferences.getString(key, ""));
 			}
 		}
 
