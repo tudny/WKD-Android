@@ -8,9 +8,10 @@ Latest version:
 
 ## Features
 - Schedule tool
-- Ticket finder
-- Nearest station finder *(WIP / no UI)*
-- Settings
+- Ticket finder (both season and single)
+- Nearest station finder
+- List of all stations (every station can be oppened in order to check the information)
+- Settings (default stations in scheduler and default ticket relief)
 
 ## Installation
 Just download the latest .apk file *(app-debugvX.X.X.apk, where X.X.X is the latest version)* from [Google Drive](https://drive.google.com/drive/folders/11cCk1WYLW4fcndNYn5KUOUNRMHgx0iKL?usp=sharing)
