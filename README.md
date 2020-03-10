@@ -9,7 +9,7 @@ Latest version:
 ## Features
 - Schedule tool (with whole route)
 
-<img src="img/Screenshot_20200310-223147.png" width="300"> <img src="img/Screenshot_20200310-223214.png" width="300"> <img src="Screenshot_20200310-223321.png" width="300">
+<img src="img/Screenshot_20200310-223147.png" width="300"> <img src="img/Screenshot_20200310-223214.png" width="300"> <img src="img/Screenshot_20200310-223321.png" width="300">
 - Ticket finder (both season and single)
 
 <img src="img/Screenshot_20200310-223239.png" width="300"> <img src="img/Screenshot_20200310-223246.png" width="300">
