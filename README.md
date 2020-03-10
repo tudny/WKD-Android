@@ -7,11 +7,22 @@ Latest version:
 **3.0-stable**
 
 ## Features
-- Schedule tool
+- Schedule tool (with whole route)
+
+<img src="img/Screenshot_20200310-223147.png" width="300"> <img src="img/Screenshot_20200310-223214.png" width="300"> <img src="Screenshot_20200310-223321.png" width="300">
 - Ticket finder (both season and single)
+
+<img src="img/Screenshot_20200310-223239.png" width="300"> <img src="img/Screenshot_20200310-223246.png" width="300">
 - Nearest station finder
+
+<img src="img/Screenshot_20200310-223257.png" width="300"> <img src="img/Screenshot_20200310-223301.png" width="300">
 - List of all stations (every station can be oppened in order to check the information)
+
+<img src="img/Screenshot_20200310-223257.png" width="300"> <img src="img/Screenshot_20200310-223306.png" width="300">
 - Settings (default stations in scheduler and default ticket relief)
+
+
+<img src="img/Screenshot_20200310-223220.png" width="300">
 
 ## Installation
 Just download the latest .apk file *(app-debugvX.X.X.apk, where X.X.X is the latest version)* from [Google Drive](https://drive.google.com/drive/folders/11cCk1WYLW4fcndNYn5KUOUNRMHgx0iKL?usp=sharing)
