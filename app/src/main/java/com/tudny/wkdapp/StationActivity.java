@@ -1,11 +1,13 @@
 package com.tudny.wkdapp;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -40,6 +42,9 @@ public class StationActivity extends AppCompatActivity {
 		} catch (Exception e){
 			Log.e(DEBUG_TAG, e.getMessage(), e);
 		}
+
+		final Button navigateButton = findViewById(R.id.navigate_button);
+		navigateButton.setOnClickListener(v -> MainActivity.openNavigation(this, station.getLatitude(),station.getLongitude()));
 		
 		/*TextView textView = findViewById(R.id.station_name);
 		textView.setText(station.getStationName());*/
@@ -86,6 +91,7 @@ public class StationActivity extends AppCompatActivity {
 		progressBar.setVisibility(View.INVISIBLE);
 	}
 
+	@SuppressLint("StaticFieldLeak")
 	private class DownloadStationsContent extends AsyncTask<String, Integer, String> {
 
 		@Override

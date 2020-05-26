@@ -20,15 +20,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.tudny.wkdapp.MainActivity;
 import com.tudny.wkdapp.R;
 import com.tudny.wkdapp.core.Station;
+import com.tudny.wkdapp.dialogs.schedule.StationPickerFragment;
 import com.tudny.wkdapp.dialogs.tickets.DirectionFragment;
 import com.tudny.wkdapp.dialogs.tickets.PeriodNamedFragment;
 import com.tudny.wkdapp.dialogs.tickets.PeriodUnnamedFragment;
 import com.tudny.wkdapp.dialogs.tickets.ReliefFragment;
 import com.tudny.wkdapp.dialogs.tickets.ReliefMiddleFragment;
 import com.tudny.wkdapp.dialogs.tickets.ReliefShortFragment;
-import com.tudny.wkdapp.dialogs.schedule.StationPickerFragment;
 import com.tudny.wkdapp.dialogs.tickets.TicketTypeFragment;
 import com.tudny.wkdapp.recycler.ticketRecycle.RowModel;
 import com.tudny.wkdapp.recycler.ticketRecycle.TicketsRecycleAdapter;
@@ -91,6 +92,8 @@ public class TicketsFragment extends Fragment implements TicketsRecycleAdapter.I
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+		MainActivity.setGoodTitle(this, R.string.tickets_label);
 
 		setupRecycler();
 		setupFromStationFragment();

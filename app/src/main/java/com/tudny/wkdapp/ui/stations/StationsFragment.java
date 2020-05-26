@@ -78,6 +78,8 @@ public class StationsFragment extends Fragment implements StationRecyclerAdapter
 	@Override
 	public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
+		MainActivity.setGoodTitle(this, R.string.stations_label);
+
 		setupRecyclerView();
 
 		if(allPermissionsOk()){
