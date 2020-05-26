@@ -164,9 +164,13 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 	}
 
 	private void loadDefaultValues() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		defaultFromStation = Station.choseByNumber(Integer.parseInt(sharedPreferences.getString(getString(R.string.default_base_key), "")));
-		defaultToStation = Station.choseByNumber(Integer.parseInt(sharedPreferences.getString(getString(R.string.default_target_key), "")));
+		try {
+			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			defaultFromStation = Station.choseByNumber(Integer.parseInt(sharedPreferences.getString(getString(R.string.default_base_key), "1")));
+			defaultToStation = Station.choseByNumber(Integer.parseInt(sharedPreferences.getString(getString(R.string.default_target_key), "26")));
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
