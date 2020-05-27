@@ -79,6 +79,8 @@
 		android:text="timeToDeparture"
 		android:textSize="24sp"
 		android:textStyle="bold"
+		app:layout_constraintHorizontal_bias="0.9"
+		app:layout_constraintStart_toEndOf="@id/topLayout"
 		app:layout_constraintBottom_toBottomOf="@+id/bottomLayout"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintTop_toTopOf="@+id/topLayout" />

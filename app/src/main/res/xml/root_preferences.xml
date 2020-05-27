@@ -37,12 +37,19 @@
 
 	<PreferenceCategory app:title="@string/default_relief">
 
+		<SwitchPreference
+			app:defaultValue="false"
+			app:key="@string/show_relief_key"
+			android:title="@string/relief_title"
+			app:summary="@string/show_relief_summary" />
+
 		<ListPreference
 			app:defaultValue="0"
 			app:key="@string/default_relief_key"
 			app:title="@string/default_relief_title"
 			app:summary="@string/relief_summary"
-			android:icon="@drawable/ic_local_activity_black_24dp"/>
+			android:icon="@drawable/ic_local_activity_black_24dp"
+			android:dependency="@string/show_relief_key"/>
 
 	</PreferenceCategory>
 </PreferenceScreen>

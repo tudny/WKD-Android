@@ -4,19 +4,28 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -43,17 +52,20 @@ import com.tudny.wkdapp.core.Station;
 import com.tudny.wkdapp.core.WKDApi;
 import com.tudny.wkdapp.core.data.Route;
 import com.tudny.wkdapp.core.data.Schedule;
+import com.tudny.wkdapp.core.data.StationOnRoute;
 import com.tudny.wkdapp.dialogs.schedule.DatePickerFragment;
 import com.tudny.wkdapp.dialogs.schedule.StationPickerFragment;
 import com.tudny.wkdapp.dialogs.schedule.TimePickerFragment;
 import com.tudny.wkdapp.gestures.WKDGestureListener;
 import com.tudny.wkdapp.recycler.scheduleRecycler.RowModel;
 import com.tudny.wkdapp.recycler.scheduleRecycler.ScheduleRecyclerAdapter;
+import com.tudny.wkdapp.tickets.WKDTickets;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,12 +90,20 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 	private static final String fromStationTag = "fromPicker";
 	private static final String toStationTag = "toPicker";
 
+	private static final String DATE_KEY = "date_key";
+	private static final String TIME_KEY = "time_key";
+	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
+	private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_TIME;
 	private LocalDate localDate;
 	private LocalTime localTime;
+
+	private LocalDate lastSearchedLocalDate;
 
 	private Station defaultFromStation = Station.GRODZISK_MAZ_RADONSKA;
 	private Station defaultToStation = Station.WWA_SRODMIESCIE_WKD;
 
+	private static final String FROM_STATION_KEY = "from_station_key";
+	private static final String TO_STATION_KEY = "to_station_key";
 	private Station fromStation;
 	private Station toStation;
 
@@ -130,6 +150,25 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 	}
 
 	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+		inflater.inflate(R.menu.schedule_menu, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		if (item.getItemId() == R.id.now_menu_option) setNow();
+
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		if(view == null) {
 			view = inflater.inflate(R.layout.fragment_schedule, container, false);
@@ -143,8 +182,11 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 
 	@Override
 	public void onViewCreated(@NonNull View view, @NonNull Bundle savedInstanceState){
+
+		MainActivity.setGoodTitle(this, R.string.schedule_label);
+
 		if(initialCreation) {
-			setupFAB(view);
+			setupSearchAndNow(view);
 			setupAll();
 		}
 	}
@@ -438,7 +480,6 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		inputFrom.setText(stationAsString);
 		inputFrom.setKeyListener(null);
 		clearFocus();
-	}
 
 		checkIcon(inputFrom, from);
 	}
@@ -515,6 +556,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 	private void setupSearchAndNow(View view){
 		View.OnClickListener onClickListener = view_temp -> {
 			String message;
+			lastSearchedLocalDate = localDate;
 			if (makeRequest()) {
 				message = getString(R.string.searching);
 			} else {
@@ -529,10 +571,14 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 
 		final Button nowButton = view.findViewById(R.id.now_button);
 		nowButton.setOnClickListener(view1 -> {
-			setLocalDate(LocalDate.now());
-			setLocalTime(LocalTime.now());
-			makeVibration(vibrationDurationForClick);
+			setNow();
 		});
+	}
+
+	private void setNow() {
+		setLocalDate(LocalDate.now());
+		setLocalTime(LocalTime.now());
+		makeVibration(vibrationDurationForClick);
 	}
 
 	private boolean makeRequest(){
@@ -562,19 +608,20 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 				ticketTextView.setVisibility(View.INVISIBLE);
 			} else {
 				message.setVisibility(View.INVISIBLE);
-				ticketTextView.setVisibility(View.VISIBLE);
+				if(isShowTicketActive()) ticketTextView.setVisibility(View.VISIBLE);
 			}
 
 			for (Route route : schedule.getRoute()) {
 				LocalTime arr = route.getArrival();
 
-				LocalDateTime arrFull = LocalDateTime.of(localDate, arr);
+				LocalDateTime arrFull = LocalDateTime.of(lastSearchedLocalDate, arr);
 				LocalDateTime now = LocalDateTime.now();
 
 				int minutes = Math.toIntExact(now.until(arrFull, ChronoUnit.MINUTES));
 
 				int h = minutes / 60;
 				int m = minutes;
+				int d = h / 24;
 
 				String display = "";
 				if (m < 0) {
@@ -582,7 +629,12 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 				} else if (m == 0) {
 					display = getString(R.string.departures);
 				} else {
-					m -= h * 60;
+					m %= 60;
+					h %= 25;
+
+					if (d > 0){
+						display = display + " " + d + getString(R.string.d) + "\n";
+					}
 
 					if (h > 0) {
 						display = display + " " + h + getString(R.string.h);
@@ -643,7 +695,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 
 		final TextView ticketTextView = getView().findViewById(R.id.ticket_text_view);
 		ticketTextView.setText(getString(R.string.ticket_price_s, ticketValue));
-		ticketTextView.setVisibility(View.VISIBLE);
+		if(isShowTicketActive()) ticketTextView.setVisibility(View.VISIBLE);
 	}
 
 	private static final class LocalTimeAdapter extends TypeAdapter<LocalTime> {
@@ -699,6 +751,11 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 			inputTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
 
 		} catch (Exception ignored){}
+	}
+
+	private boolean isShowTicketActive() {
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		return sharedPreferences.getBoolean(getString(R.string.show_relief_key), false);
 	}
 
 	private void setupReloader() {

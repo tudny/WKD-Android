@@ -128,15 +128,15 @@ public class WKDTickets {
 	public enum ReliefForSingleTicket {
 		NORMAL(0, "Normalny", "taryfa normalna"),
 		RELIEF33(33, "Ulga 33\uff05", "Ulga ustawowa 33\uff05 (nauczyciele)"),
-		RELIEF37(37, "ulga 37\uff05", "ulga ustawowa 37\uff05 (dzieci, uczniowie)"),
-		RELIEF45(45, "ulga 45\uff05", "ulga handlowa 45\uff05 (bilet miejski ważny w obrębie miast Grodzisk Maz. i Podkowa Leśna)"),
-		RELIEF49(49, "ulga 49\uff05", "ulga ustawowa 49\uff05 (osoby niezdolne do samodzielnej egzystencji)"),
-		RELIEF50(50, "ulga 50\uff05", "ulga handlowa 50\uff05 (senior, strefa budżetowa)"),
-		RELIEF51(51, "ulga 51\uff05", "ulga ustawowa 51\uff05 (studenci, doktoranci)"),
-		RELIEF78(78, "ulga 78\uff05", "ulga ustawowa 78\uff05 (dieci niepełnosprawne i ich opiekunowie, żołnierze)"),
-		RELIEF93(93, "ulga 93\uff05", "ulga ustawowa 93\uff05 (osoby niewidome)"),
-		RELIEF95(95, "ulga 95\uff05", "ulga ustawowa 95\uff05 (opiekunowie, przewodnicy)"),
-		RELIEF100(100, "ulga 100\uff05", "ulga ustawowa 100\uff05, (przejazdy bezpłatne)");
+		RELIEF37(37, "Ulga 37\uff05", "Ulga ustawowa 37\uff05 (dzieci, uczniowie)"),
+		RELIEF45(45, "Ulga 45\uff05", "Ulga handlowa 45\uff05 (bilet miejski ważny w obrębie miast Grodzisk Maz. i Podkowa Leśna)"),
+		RELIEF49(49, "Ulga 49\uff05", "Ulga ustawowa 49\uff05 (osoby niezdolne do samodzielnej egzystencji)"),
+		RELIEF50(50, "Ulga 50\uff05", "Ulga handlowa 50\uff05 (senior, strefa budżetowa)"),
+		RELIEF51(51, "Ulga 51\uff05", "Ulga ustawowa 51\uff05 (studenci, doktoranci)"),
+		RELIEF78(78, "Ulga 78\uff05", "Ulga ustawowa 78\uff05 (dieci niepełnosprawne i ich opiekunowie, żołnierze)"),
+		RELIEF93(93, "Ulga 93\uff05", "Ulga ustawowa 93\uff05 (osoby niewidome)"),
+		RELIEF95(95, "Ulga 95\uff05", "Ulga ustawowa 95\uff05 (opiekunowie, przewodnicy)"),
+		RELIEF100(100, "Ulga 100\uff05", "Ulga ustawowa 100\uff05, (przejazdy bezpłatne)");
 
 		@Getter
 		private final Integer type;

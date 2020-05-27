@@ -29,6 +29,7 @@
 	<string name="departures">Departures</string>
 	<string name="h">h</string>
 	<string name="m">m</string>
+	<string name="d">d</string>
 	<string name="searching">Searching…</string>
 	<string name="bad_input">Bad input</string>
 	<string name="tickets">Tickets</string>
@@ -95,5 +96,8 @@
 	<string name="default_relief_key">default_relief_key_preferences</string>
 	<string name="default_relief_title">Default Ticket Relief</string>
 	<string name="relief_summary">Select_relief</string>
+	<string name="show_relief_key">show_relief_key_preferences</string>
+	<string name="relief_title">Show ticket price</string>
+	<string name="show_relief_summary">Displays single-use ticket price on main screen</string>
 
 </resources>

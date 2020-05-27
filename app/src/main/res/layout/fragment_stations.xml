@@ -37,7 +37,7 @@
 			android:layout_marginStart="8dp"
 			android:layout_marginEnd="8dp"
 			android:layout_weight="1"
-			style="@style/MyButtonStyle"/>
+			style="@style/Widget.AppCompat.Button.Colored"/>
 
 		<Button
 			android:id="@+id/navigate_button"
@@ -47,7 +47,7 @@
 			android:layout_marginEnd="8dp"
 			android:text="@string/navigate"
 			android:layout_weight="1"
-			style="@style/MyButtonStyle"/>
+			style="@style/Widget.AppCompat.Button.Colored"/>
 
 	</LinearLayout>
 
