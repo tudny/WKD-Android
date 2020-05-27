@@ -545,7 +545,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		});
 	}
 
-	private boolean makeRequest() {
+	private boolean makeRequest(){
 		if(fromStation.equals(toStation) || !Station.canConnect(fromStation, toStation)){
 			return false;
 		}
