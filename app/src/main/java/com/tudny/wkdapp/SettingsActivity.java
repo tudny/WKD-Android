@@ -1,24 +1,21 @@
 package com.tudny.wkdapp;
 
-import android.Manifest;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.tudny.wkdapp.core.Station;
+import com.tudny.wkdapp.tickets.WKDTickets;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Arrays;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -48,11 +45,13 @@ public class SettingsActivity extends AppCompatActivity {
 
 			fillDynamicStationData(R.string.default_base_key);
 			fillDynamicStationData(R.string.default_target_key);
+			fillDynamicReliefData(R.string.default_relief_key);
 
 			sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
 			onSharedPreferenceChanged(sharedPreferences, getString(R.string.default_base_key));
 			onSharedPreferenceChanged(sharedPreferences, getString(R.string.default_target_key));
+			onSharedPreferenceChanged(sharedPreferences, getString(R.string.default_relief_key));
 		}
 
 		private void fillDynamicStationData(int id) {
@@ -64,6 +63,21 @@ public class SettingsActivity extends AppCompatActivity {
 				stations.forEach(station -> {
 					entries[stations.indexOf(station)] = station.getStationName();
 					entryValues[stations.indexOf(station)] = station.getStationNumber().toString();
+				});
+				listPreference.setEntries(entries);
+				listPreference.setEntryValues(entryValues);
+			}
+		}
+
+		private void fillDynamicReliefData(int id) {
+			ListPreference listPreference = findPreference(getString(id));
+			if(listPreference != null){
+				ArrayList<WKDTickets.ReliefForSingleTicket> reliefs = WKDTickets.ReliefForSingleTicket.getArrayListOfRelies();
+				CharSequence[] entries = new String[reliefs.size()];
+				CharSequence[] entryValues = new String[reliefs.size()];
+				reliefs.forEach(relief -> {
+					entries[reliefs.indexOf(relief)] = relief.getFullName();
+					entryValues[reliefs.indexOf(relief)] = relief.getType().toString();
 				});
 				listPreference.setEntries(entries);
 				listPreference.setEntryValues(entryValues);

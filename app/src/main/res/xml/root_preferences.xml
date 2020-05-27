@@ -20,14 +20,14 @@
 	<PreferenceCategory app:title="@string/default_settings_header">
 
 		<ListPreference
-			app:defaultValue="-1"
+			app:defaultValue="1"
 			app:key="@string/default_base_key"
 			app:title="@string/default_base_title"
 			app:summary="@string/station_summary"
 			android:icon="@drawable/ic_home_black_24dp"/>
 
 		<ListPreference
-			app:defaultValue="-1"
+			app:defaultValue="26"
 			app:key="@string/default_target_key"
 			app:title="@string/default_target_title"
 			app:summary="@string/station_summary"
@@ -35,13 +35,14 @@
 
 	</PreferenceCategory>
 
-	<!--<PreferenceCategory app:title="@string/settings_features">
+	<PreferenceCategory app:title="@string/default_relief">
 
-		<SwitchPreferenceCompat
-			android:key="@string/default_live_upgrade_key"
-			app:title="@string/live_upgrade_title"
-			app:summary="@string/live_update_summary"/>
+		<ListPreference
+			app:defaultValue="0"
+			app:key="@string/default_relief_key"
+			app:title="@string/default_relief_title"
+			app:summary="@string/relief_summary"
+			android:icon="@drawable/ic_local_activity_black_24dp"/>
 
-
-	</PreferenceCategory> -->
+	</PreferenceCategory>
 </PreferenceScreen>

@@ -2,7 +2,6 @@ package com.tudny.wkdapp.recycler.scheduleRecycler;
 
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,7 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
 	@NonNull
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-		View view = inflater.inflate(R.layout.schedule_row_layout, viewGroup, false);
+		View view = inflater.inflate(R.layout.schedule_row_layout_beta, viewGroup, false);
 		return new ViewHolder(view);
 	}
 
@@ -45,10 +44,8 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
 		RowModel choose = rowData.get(i);
 		viewHolder.depTime.setText(choose.departureTime);
 		viewHolder.timeToDep.setText(choose.timeToDeparture);
-		if(i == 0){
-			viewHolder.depTime.setTypeface(null, Typeface.BOLD);
-			viewHolder.timeToDep.setTypeface(null, Typeface.BOLD);
-		}
+		viewHolder.trainId.setText(choose.trainNumber);
+		viewHolder.stationName.setText(choose.destinationStation);
 	}
 
 	@Override
@@ -85,11 +82,15 @@ public class ScheduleRecyclerAdapter extends RecyclerView.Adapter<ScheduleRecycl
 
 		final TextView depTime;
 		final TextView timeToDep;
+		final TextView trainId;
+		final TextView stationName;
 
 		ViewHolder(@NonNull View itemView) {
 			super(itemView);
 			depTime = itemView.findViewById(R.id.depTime);
 			timeToDep = itemView.findViewById(R.id.timeToDep);
+			trainId = itemView.findViewById(R.id.train_id);
+			stationName = itemView.findViewById(R.id.station_name);
 			itemView.setOnClickListener(this);
 		}
 

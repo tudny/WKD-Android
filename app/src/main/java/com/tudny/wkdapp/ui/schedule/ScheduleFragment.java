@@ -1,11 +1,10 @@
 package com.tudny.wkdapp.ui.schedule;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.LocationListener;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.VibrationEffect;
@@ -16,14 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.preference.DialogPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,7 +35,6 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.RequestQueue;
 import com.android.volley.TimeoutError;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,17 +48,20 @@ import com.tudny.wkdapp.core.Station;
 import com.tudny.wkdapp.core.WKDApi;
 import com.tudny.wkdapp.core.data.Route;
 import com.tudny.wkdapp.core.data.Schedule;
+import com.tudny.wkdapp.core.data.StationOnRoute;
 import com.tudny.wkdapp.dialogs.schedule.DatePickerFragment;
 import com.tudny.wkdapp.dialogs.schedule.StationPickerFragment;
 import com.tudny.wkdapp.dialogs.schedule.TimePickerFragment;
 import com.tudny.wkdapp.gestures.WKDGestureListener;
 import com.tudny.wkdapp.recycler.scheduleRecycler.RowModel;
 import com.tudny.wkdapp.recycler.scheduleRecycler.ScheduleRecyclerAdapter;
+import com.tudny.wkdapp.tickets.WKDTickets;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,12 +86,18 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 	private static final String fromStationTag = "fromPicker";
 	private static final String toStationTag = "toPicker";
 
+	private static final String DATE_KEY = "date_key";
+	private static final String TIME_KEY = "time_key";
+	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE;
+	private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_TIME;
 	private LocalDate localDate;
 	private LocalTime localTime;
 
 	private Station defaultFromStation = Station.GRODZISK_MAZ_RADONSKA;
 	private Station defaultToStation = Station.WWA_SRODMIESCIE_WKD;
 
+	private static final String FROM_STATION_KEY = "from_station_key";
+	private static final String TO_STATION_KEY = "to_station_key";
 	private Station fromStation;
 	private Station toStation;
 
@@ -108,9 +118,6 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 	private GestureDetectorCompat timeGestureDetector;
 	private GestureDetectorCompat fromGestureDetector;
 	private GestureDetectorCompat toGestureDetector;
-
-	private LocationListener gpsLocationListener;
-	private LocationListener mobileLocationListener;
 
 	private Vibrator singleClickVibration;
 	private static final int vibrationDurationForClick = 25;
@@ -151,9 +158,38 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 	@Override
 	public void onViewCreated(@NonNull View view, @NonNull Bundle savedInstanceState){
 		if(initialCreation) {
-			setupFAB(view);
+			setupSearchAndNow(view);
 			setupAll();
 		}
+	}
+
+	@Override
+	public void onSaveInstanceState(@NonNull Bundle outState) {
+		final Integer fromStationId = fromStation.getStationNumber();
+		final Integer toStationId = toStation.getStationNumber();
+		final String date = localDate.format(dateFormatter);
+		final String time = localTime.format(timeFormatter);
+		outState.putInt(FROM_STATION_KEY, fromStationId);
+		outState.putInt(TO_STATION_KEY, toStationId);
+		outState.putString(DATE_KEY, date);
+		outState.putString(TIME_KEY, time);
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+		try {
+			final Integer fromStationId = savedInstanceState.getInt(FROM_STATION_KEY);
+			final Integer toStationId = savedInstanceState.getInt(TO_STATION_KEY);
+			final String date = savedInstanceState.getString(DATE_KEY);
+			final String time = savedInstanceState.getString(TIME_KEY);
+			setFromStation(Station.choseByNumber(fromStationId));
+			setToStation(Station.choseByNumber(toStationId));
+			setLocalDate(LocalDate.parse(date, dateFormatter));
+			setLocalTime(LocalTime.parse(time, timeFormatter));
+		} catch (Exception ignored){}
+
+		super.onViewStateRestored(savedInstanceState);
 	}
 
 	private void setupAll() {
@@ -173,11 +209,8 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 	private void loadDefaultValues() {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-//		Boolean live = sharedPreferences.getBoolean(getString(R.string.default_live_upgrade_key), Boolean.FALSE);
-//		// ToODO: handle live feature on/off
-
-		defaultFromStation = Station.choseByNumber(Integer.parseInt(sharedPreferences.getString(getString(R.string.default_base_key), "")));
-		defaultToStation = Station.choseByNumber(Integer.parseInt(sharedPreferences.getString(getString(R.string.default_target_key), "")));
+		defaultFromStation = Station.choseByNumber(Integer.parseInt(sharedPreferences.getString(getString(R.string.default_base_key), "1")));
+		defaultToStation = Station.choseByNumber(Integer.parseInt(sharedPreferences.getString(getString(R.string.default_target_key), "26")));
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -352,6 +385,8 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		inputTo.setText(stationAsString);
 		inputTo.setKeyListener(null);
 		clearFocus();
+
+		checkIcon(inputTo, to);
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -414,8 +449,9 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		inputFrom.setText(stationAsString);
 		inputFrom.setKeyListener(null);
 		clearFocus();
-	}
 
+		checkIcon(inputFrom, from);
+	}
 
 	private void setupVibration(){
 		singleClickVibration = (Vibrator) Objects.requireNonNull(getActivity()).getSystemService(Context.VIBRATOR_SERVICE);
@@ -472,7 +508,9 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
 		wkdApi = new WKDApi(schedule -> {
 			updateRecyclerView(schedule, Boolean.TRUE);
+			updateTicket(schedule);
 			savedSchedule = schedule;
+			setupReloader();
 			Toast.makeText(getContext(), schedule.getInfo().toPrintString(), Toast.LENGTH_SHORT).show();
 		}, error -> {
 			if(error instanceof TimeoutError)
@@ -484,18 +522,26 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		});
 	}
 
-	private void setupFAB(View view){
-		FloatingActionButton fab = view.findViewById(R.id.searchButton);
-		fab.setOnClickListener(viewTemp -> {
-
+	private void setupSearchAndNow(View view){
+		View.OnClickListener onClickListener = view_temp -> {
 			String message;
-			if(makeRequest()){
+			if (makeRequest()) {
 				message = getString(R.string.searching);
 			} else {
 				message = getString(R.string.bad_input);
 			}
 
 			Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+		};
+
+		Button button = view.findViewById(R.id.search_button);
+		button.setOnClickListener(onClickListener);
+
+		final Button nowButton = view.findViewById(R.id.now_button);
+		nowButton.setOnClickListener(view1 -> {
+			setLocalDate(LocalDate.now());
+			setLocalTime(LocalTime.now());
+			makeVibration(vibrationDurationForClick);
 		});
 	}
 
@@ -517,52 +563,97 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		 * Checking if there is any route available
 		 * */
 
-		if(schedule.getRoute().size() == 0) {
-			RowModel rowModel = new RowModel(getString(R.string.no_train_left), "");
-			listValues.add(rowModel);
-		} else {
-			RowModel rowModel = new RowModel(getString(R.string.dep_at), getString(R.string.dep_in));
-			listValues.add(rowModel);
-		}
+		try {
 
-		for(Route route : schedule.getRoute()){
-			LocalTime arr = route.getArrival();
-
-			LocalDateTime arrFull = LocalDateTime.of(localDate, arr);
-			LocalDateTime now = LocalDateTime.now();
-
-			int minutes = Math.toIntExact(now.until(arrFull, ChronoUnit.MINUTES));
-
-			int h = minutes / 60;
-			int m = minutes;
-
-			String display = "";
-			if(m < 0){
-				display = getString(R.string.to_late);
-			} else if(m == 0){
-				display = getString(R.string.departures);
+			final TextView ticketTextView = getView().findViewById(R.id.ticket_text_view);
+			final ConstraintLayout message = getView().findViewById(R.id.no_train_message);
+			if (schedule.getRoute().size() == 0) {
+				message.setVisibility(View.VISIBLE);
+				ticketTextView.setVisibility(View.INVISIBLE);
 			} else {
-				m -= h * 60;
-
-				if(h > 0){
-					display = display + " " + h + getString(R.string.h);
-				}
-
-				if(m > 0){
-					display = display + " " + m + getString(R.string.m);
-				}
+				message.setVisibility(View.INVISIBLE);
+				ticketTextView.setVisibility(View.VISIBLE);
 			}
 
-			RowModel rowModel = new RowModel(arr.format(((MainActivity) Objects.requireNonNull(getActivity())).getTimeFormatter()), display);
-			listValues.add(rowModel);
+			for (Route route : schedule.getRoute()) {
+				LocalTime arr = route.getArrival();
+
+				LocalDateTime arrFull = LocalDateTime.of(localDate, arr);
+				LocalDateTime now = LocalDateTime.now();
+
+				int minutes = Math.toIntExact(now.until(arrFull, ChronoUnit.MINUTES));
+
+				int h = minutes / 60;
+				int m = minutes;
+
+				String display = "";
+				if (m < 0) {
+					display = getString(R.string.to_late);
+				} else if (m == 0) {
+					display = getString(R.string.departures);
+				} else {
+					m -= h * 60;
+
+					if (h > 0) {
+						display = display + " " + h + getString(R.string.h);
+					}
+
+					if (m > 0) {
+						display = display + " " + m + getString(R.string.m);
+					}
+				}
+
+				String station = route.getIntermediateStations().get(route.getIntermediateStations().size() - 1).getName();
+				String trainNumber = route.getSymbol();
+
+				RowModel rowModel = new RowModel(arr.format(((MainActivity) Objects.requireNonNull(getActivity())).getTimeFormatter()), display, station, trainNumber);
+				listValues.add(rowModel);
+			}
+
+			RecyclerView recyclerView = Objects.requireNonNull(getView()).findViewById(R.id.recycleList);
+			try {
+				((ScheduleRecyclerAdapter) Objects.requireNonNull(recyclerView.getAdapter())).updateItems(listValues, schedule, playAnimation);
+			} catch (NullPointerException e) {
+				Log.e(DEBUG_TAG, "Sth went wrong! " + e.getMessage() + " at " + Arrays.toString(e.getStackTrace()));
+			}
+		} catch (Exception e) {
+			Log.e(DEBUG_TAG, "updateRecyclerView: " + e.getMessage());
+		}
+	}
+
+	private void updateTicket(Schedule schedule){
+		StationOnRoute startStation = null;
+		StationOnRoute endStation = null;
+		for(StationOnRoute station : schedule.getRoute().get(0).getIntermediateStations()){
+			if(station.getActive() && startStation == null){
+				startStation = station;
+			} else if(station.getActive() && endStation == null){
+				endStation = station;
+			}
+		}
+		long timeDiff;
+		if(startStation == null || endStation == null) timeDiff = -1;
+		else {
+			if(startStation.getDeparture().isAfter(endStation.getArrival())){
+				LocalDateTime startTemp = LocalDateTime.of(LocalDate.of(2000, 1, 1), startStation.getDeparture());
+				LocalDateTime endTemp = LocalDateTime.of(LocalDate.of(2000, 1, 2), endStation.getArrival());
+				timeDiff = startTemp.until(endTemp, ChronoUnit.MINUTES);
+			} else {
+				timeDiff = startStation.getDeparture().until(endStation.getArrival(), ChronoUnit.MINUTES);
+			}
 		}
 
-		RecyclerView recyclerView = Objects.requireNonNull(getView()).findViewById(R.id.recycleList);
-		try{
-			((ScheduleRecyclerAdapter) Objects.requireNonNull(recyclerView.getAdapter())).updateItems(listValues, schedule, playAnimation);
-		} catch (NullPointerException e){
-			Log.e(DEBUG_TAG, "Sth went wrong! " + e.getMessage() + " at " + Arrays.toString(e.getStackTrace()));
-		}
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		Integer reliefNr = Integer.parseInt(sharedPreferences.getString(getString(R.string.default_relief_key), "0"));
+
+		WKDTickets.ReliefForSingleTicket relief = WKDTickets.ReliefForSingleTicket.findReliefByType(reliefNr); //WKDTickets.Relief.NORMAL;
+		Double ticketValue = WKDTickets.singleTicket(WKDTickets.Zone.findZoneByTime((int) timeDiff), relief);
+
+		Log.d(DEBUG_TAG, "Ticket: " + ticketValue + " | Time: " + timeDiff);
+
+		final TextView ticketTextView = getView().findViewById(R.id.ticket_text_view);
+		ticketTextView.setText(getString(R.string.ticket_price_s, ticketValue));
+		ticketTextView.setVisibility(View.VISIBLE);
 	}
 
 	private static final class LocalTimeAdapter extends TypeAdapter<LocalTime> {
@@ -579,8 +670,6 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 
 	@Override
 	public void onItemClick(View view, int position) {
-		// header :(
-		position--;
 
 		try {
 			Log.d(DEBUG_TAG, "Clicked: " + adapter.getItem(position) + " on " + position);
@@ -602,6 +691,24 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 			}
 			e.printStackTrace();
 		}
+	}
+
+	private void checkIcon(TextInputEditText inputTextView, Station station) {
+		try {
+			assert getContext() != null;
+
+			Drawable drawable;
+			if (station == defaultFromStation) {
+				drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_home_white_24dp);
+			} else if(station == defaultToStation) {
+				drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_flag_white_24dp);
+			} else {
+				drawable = null;
+			}
+
+			inputTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
+
+		} catch (Exception ignored){}
 	}
 
 	private void setupReloader() {

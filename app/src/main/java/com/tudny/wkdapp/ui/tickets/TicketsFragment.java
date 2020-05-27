@@ -1,5 +1,8 @@
 package com.tudny.wkdapp.ui.tickets;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -98,13 +103,35 @@ public class TicketsFragment extends Fragment implements TicketsRecycleAdapter.I
 		setupTicketTypeFragment();
 
 		setupFAB();
+		setupLayout(R.id.season_ticket_layout, R.id.season_ticket_view);
+		setupLayout(R.id.single_ticket_layout, R.id.single_ticket_view);
 
 		new FetchHTMLTable().execute(URL);
 	}
 
+	private void setupLayout(Integer layoutId, Integer clickableId) {
+		LinearLayout topLayout = getView().findViewById(layoutId);
+		TextView clickable = getView().findViewById(clickableId);
+
+		clickable.setOnClickListener(view -> {
+			int vis;
+			switch(topLayout.getVisibility()){
+				case View.VISIBLE:
+					vis = View.GONE;
+					break;
+				case View.GONE:
+					vis = View.VISIBLE;
+					break;
+				default:
+					vis = View.VISIBLE;
+			}
+			topLayout.setVisibility(vis);
+		});
+	}
+
 	private void setupFAB(){
-		FloatingActionButton fab = Objects.requireNonNull(getView()).findViewById(R.id.search_fab);
-		fab.setOnClickListener(v -> {
+		Button button = Objects.requireNonNull(getView()).findViewById(R.id.search_button);
+		button.setOnClickListener(v -> {
 
 			WKDTickets.DistanceZone distanceZone = WKDTickets.DistanceZone.findDistanceZoneByDistance(Station.distance(fromStation, toStation));
 

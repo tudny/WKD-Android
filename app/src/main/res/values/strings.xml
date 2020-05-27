@@ -25,7 +25,7 @@
 	<string name="today">Today</string>
 	<string name="tomorrow">Tomorrow</string>
 	<string name="now">Now</string>
-	<string name="to_late">To late</string>
+	<string name="to_late">Too late</string>
 	<string name="departures">Departures</string>
 	<string name="h">h</string>
 	<string name="m">m</string>
@@ -73,9 +73,9 @@
 
 	<string name="default_settings_header">Default stations</string>
 
-	<string name="default_base_title">Default base station</string>
+	<string name="default_base_title">Base station</string>
 	<string name="default_base_key">default_base_key_preferences</string>
-	<string name="default_target_title">Default target station</string>
+	<string name="default_target_title">Target station</string>
 	<string name="default_target_key">default_target_key_preferences</string>
 	<string name="stations_label">Stations</string>
 	<string name="settings_features">Additional features</string>
@@ -86,5 +86,14 @@
 	<string name="set">Set</string>
 	<string name="cancel">Cancel</string>
 	<string name="show_details">Show details</string>
+	<string name="train_icon">Train icon</string>
+	<string name="scheduled">Scheduled • </string>
+	<string name="sorry">Sorry, but there is no train left</string>
+	<string name="search">Search</string>
+	<string name="ticket_price_s">Ticket price: %.02f PLN</string>
+	<string name="default_relief">Relief</string>
+	<string name="default_relief_key">default_relief_key_preferences</string>
+	<string name="default_relief_title">Default Ticket Relief</string>
+	<string name="relief_summary">Select_relief</string>
 
 </resources>

@@ -19,17 +19,17 @@ public class WKDTickets {
 	public enum Relief{
 
 		NORMAL(0, "Normalny", "taryfa normalna"),
-		RELIEF33(33, "Ulgowy 33%", "33% - nauczyciele"),
-		RELIEF37(37, "Ulgowy 37%", "37% - niewidomi, cywilne niewidome ofiary działań wojennych całkowicie niezdolne do pracy"),
-		RELIEF49(49, "Ulgowy 49%", "49% - dzieci i uczniowie, rodzice oraz małżonkowie rodziców z rodzin wielodzietnych legitymujący się Kartą Dużej Rodziny"),
-		RELIEF50(50, "Ulgowy 50%", "50% - seniorzy powyżej 60 roku życia, pracownicy sfery budżetowej"),
-		RELIEF51(51, "Ulgowy 51%", "51% - studenci, doktoranci"),
+		RELIEF33(33, "Ulgowy 33\uff05", "33\uff05 - nauczyciele"),
+		RELIEF37(37, "Ulgowy 37\uff05", "37\uff05 - niewidomi, cywilne niewidome ofiary działań wojennych całkowicie niezdolne do pracy"),
+		RELIEF49(49, "Ulgowy 49\uff05", "49\uff05 - dzieci i uczniowie, rodzice oraz małżonkowie rodziców z rodzin wielodzietnych legitymujący się Kartą Dużej Rodziny"),
+		RELIEF50(50, "Ulgowy 50\uff05", "50\uff05 - seniorzy powyżej 60 roku życia, pracownicy sfery budżetowej"),
+		RELIEF51(51, "Ulgowy 51\uff05", "51\uff05 - studenci, doktoranci"),
 		//RELIEF70(70, "ulgowy 70%"),
-		RELIEF78(78, "Ulgowy 78%", "78% - dzieci i młodzież niepełnosprawna"),
-		RELIEF80(80, "Ulgowy 80%", "80% - dzieci i współmałżonkowie pracowników kolejowych"),
+		RELIEF78(78, "Ulgowy 78\uff05", "78\uff05 - dzieci i młodzież niepełnosprawna"),
+		RELIEF80(80, "Ulgowy 80\uff05", "80\uff05 - dzieci i współmałżonkowie pracowników kolejowych"),
 		//RELIEF85(85, "ulgowy 85%"),
 		//RELIEF95(95, "ulgowy 95%"),
-		RELIEF93(93, "Ulgowy 93%", "93% - osoby niewidome uznane za niezdolne do samodzielnej egzystencji"),
+		RELIEF93(93, "Ulgowy 93\uff05", "93% - osoby niewidome uznane za niezdolne do samodzielnej egzystencji"),
 		//RELIEF100(100, "ulgowy 100%"),
 		//LUGGAGE(TicketsCustomReliefs.LUGGAGE, "bagaż"),
 		RAILWAYMAN(TicketsCustomReliefs.RAILWAYMAN, "Kolejarz", "Kolejarz – pracownicy, emeryci, renciści kolejowi");
@@ -113,12 +113,79 @@ public class WKDTickets {
 			}
 			return tab;
 		}
+
+		public static Relief findReliefByType(Integer type){
+			Relief relief = null;
+			for(Relief relief_f : getArrayListOfRelies()){
+				if(relief_f.getType().equals(type)){
+					relief = relief_f;
+				}
+			}
+			return relief;
+		}
+	}
+
+	public enum ReliefForSingleTicket {
+		NORMAL(0, "Normalny", "taryfa normalna"),
+		RELIEF33(33, "Ulga 33\uff05", "Ulga ustawowa 33\uff05 (nauczyciele)"),
+		RELIEF37(37, "ulga 37\uff05", "ulga ustawowa 37\uff05 (dzieci, uczniowie)"),
+		RELIEF45(45, "ulga 45\uff05", "ulga handlowa 45\uff05 (bilet miejski ważny w obrębie miast Grodzisk Maz. i Podkowa Leśna)"),
+		RELIEF49(49, "ulga 49\uff05", "ulga ustawowa 49\uff05 (osoby niezdolne do samodzielnej egzystencji)"),
+		RELIEF50(50, "ulga 50\uff05", "ulga handlowa 50\uff05 (senior, strefa budżetowa)"),
+		RELIEF51(51, "ulga 51\uff05", "ulga ustawowa 51\uff05 (studenci, doktoranci)"),
+		RELIEF78(78, "ulga 78\uff05", "ulga ustawowa 78\uff05 (dieci niepełnosprawne i ich opiekunowie, żołnierze)"),
+		RELIEF93(93, "ulga 93\uff05", "ulga ustawowa 93\uff05 (osoby niewidome)"),
+		RELIEF95(95, "ulga 95\uff05", "ulga ustawowa 95\uff05 (opiekunowie, przewodnicy)"),
+		RELIEF100(100, "ulga 100\uff05", "ulga ustawowa 100\uff05, (przejazdy bezpłatne)");
+
+		@Getter
+		private final Integer type;
+		@Getter
+		private final String name;
+		@Getter
+		private final String fullName;
+
+		ReliefForSingleTicket(Integer type, String name, String fullName) {
+			this.type = type;
+			this.name = name;
+			this.fullName = fullName;
+		}
+
+		public static ArrayList<String> getArrayListOfNames(){
+			ArrayList<String> list = new ArrayList<>();
+			for(ReliefForSingleTicket relief : ReliefForSingleTicket.values()){
+				list.add(relief.getName());
+			}
+			return list;
+		}
+
+		public static ArrayList<String> getArrayListOfFullNames(){
+			ArrayList<String> list = new ArrayList<>();
+			for(ReliefForSingleTicket relief : ReliefForSingleTicket.values()){
+				list.add(relief.getFullName());
+			}
+			return list;
+		}
+
+		public static ArrayList<ReliefForSingleTicket> getArrayListOfRelies(){
+			return new ArrayList<>(Arrays.asList(ReliefForSingleTicket.values()));
+		}
+
+		public static ReliefForSingleTicket findReliefByType(Integer type){
+			ReliefForSingleTicket relief = null;
+			for(ReliefForSingleTicket relief_f : getArrayListOfRelies()){
+				if(relief_f.getType().equals(type)){
+					relief = relief_f;
+				}
+			}
+			return relief;
+		}
 	}
 
 	public enum Zone{
-		ZONE1(1, "I strefa"),
-		ZONE2(2, "II strefa"),
-		ZONE3(3, "III strefa");
+		ZONE1(1, "I strefa", 0, 19),
+		ZONE2(2, "II strefa", 20, 38),
+		ZONE3(3, "III strefa", 39, 999);
 
 		@Getter
 		private final Integer zone_number;
@@ -126,9 +193,27 @@ public class WKDTickets {
 		@Getter
 		private final String name;
 
-		Zone(Integer zone_no, String name){
+		@Getter
+		private final Integer down;
+
+		@Getter
+		private final Integer up;
+
+		Zone(Integer zone_no, String name, Integer down, Integer up){
 			zone_number = zone_no;
 			this.name = name;
+			this.down = down;
+			this.up = up;
+		}
+
+		public static Zone findZoneByTime(Integer time){
+			Zone zone = null;
+			for(Zone zone_t : values()){
+				if(zone_t.down <= time && time <= zone_t.up){
+					zone = zone_t;
+				}
+			}
+			return zone;
 		}
 	}
 
@@ -266,7 +351,7 @@ public class WKDTickets {
 
 	// ZONE - 1, 2, 3
 	// RELIEF - 0, 33, 37, 49, 50, 51, 70, 78, 80, 85, 93, 100, LUGGAGE, RAILWAYMAN, DRIVER, URBAN2, URBAN3
-	public static Double singleTicket(Zone zone, Relief relief){
+	public static Double singleTicket(Zone zone, ReliefForSingleTicket relief){
 
 		double price = 1000000000.0;
 
@@ -309,32 +394,32 @@ public class WKDTickets {
 			else
 				price = 18.00;
 */
-			if(relief == Relief.NORMAL /*|| relief == 'luggage'*/)
+			if(relief == ReliefForSingleTicket.NORMAL /*|| relief == 'luggage'*/)
 				price = 4.10;
-			else if(relief == Relief.RELIEF33)
+			else if(relief == ReliefForSingleTicket.RELIEF33)
 				price = 2.75;
-			else if(relief == Relief.RELIEF37)
+			else if(relief == ReliefForSingleTicket.RELIEF37)
 				price = 2.58;
-			else if(relief == Relief.RELIEF49)
+			else if(relief == ReliefForSingleTicket.RELIEF49)
 				price = 2.09;
-			else if(relief == Relief.RELIEF50)
+			else if(relief == ReliefForSingleTicket.RELIEF50)
 				price = 2.05;
-			else if(relief == Relief.RELIEF51)
+			else if(relief == ReliefForSingleTicket.RELIEF51)
 				price = 2.01;
-			else if(relief == Relief.RELIEF78)
+			else if(relief == ReliefForSingleTicket.RELIEF78)
 				price = 0.90;
-			else if(relief == Relief.RELIEF80)
-				price = 2.05;
-//			else if(relief == Relief.RELIEF85)
+//			else if(relief == ReliefForSingleTicket.RELIEF80)
+//				price = 2.05;
+//			else if(relief == ReliefForSingleTicket.RELIEF85)
 //				price = 0.62;
-			else if(relief == Relief.RELIEF93)
+			else if(relief == ReliefForSingleTicket.RELIEF93)
 				price = 0.29;
-//			else if(relief == Relief.RELIEF95)
-//				price = 0.21;
-//			else if(relief == Relief.RELIEF100)
-//				price = 0.00;
-			else if(relief == Relief.RAILWAYMAN)
-				price = 2.05;
+			else if(relief == ReliefForSingleTicket.RELIEF95)
+				price = 0.21;
+			else if(relief == ReliefForSingleTicket.RELIEF100)
+				price = 0.00;
+//			else if(relief == ReliefForSingleTicket.RAILWAYMAN)
+//				price = 2.05;
 //			else if(relief == 'driver')
 //				price = 5.50;
 //			else if(relief == 'urban2')
@@ -345,130 +430,130 @@ public class WKDTickets {
 				price = 20.50;
 
 		} else if(zone == Zone.ZONE2){
-			/*if(relief == Relief.NORMAL*//* || relief == Relief.LUGGAGE*//*)
+			/*if(relief == ReliefForSingleTicket.NORMAL*//* || relief == ReliefForSingleTicket.LUGGAGE*//*)
 				price = 4.80;
-			else if(relief == Relief.RELIEF33)
+			else if(relief == ReliefForSingleTicket.RELIEF33)
 				price = 3.20;
-			else if(relief == Relief.RELIEF37)
+			else if(relief == ReliefForSingleTicket.RELIEF37)
 				price = 3.00;
-			else if(relief == Relief.RELIEF49)
+			else if(relief == ReliefForSingleTicket.RELIEF49)
 				price = 2.45;
-			else if(relief == Relief.RELIEF50)
+			else if(relief == ReliefForSingleTicket.RELIEF50)
 				price = 2.40;
-			else if(relief == Relief.RELIEF51)
+			else if(relief == ReliefForSingleTicket.RELIEF51)
 				price = 2.35;
-//			else if(relief == Relief.RELIEF70)
+//			else if(relief == ReliefForSingleTicket.RELIEF70)
 //				price = 1.80;
-			else if(relief == Relief.RELIEF78)
+			else if(relief == ReliefForSingleTicket.RELIEF78)
 				price = 1.00;
-			else if(relief == Relief.RELIEF80)
+			else if(relief == ReliefForSingleTicket.RELIEF80)
 				price = 1.80;
-//			else if(relief == Relief.RELIEF85)
+//			else if(relief == ReliefForSingleTicket.RELIEF85)
 //				price = 0.70;
-			else if(relief == Relief.RELIEF93)
+			else if(relief == ReliefForSingleTicket.RELIEF93)
 				price = 0.34;
-//			else if(relief == Relief.RELIEF95)
+//			else if(relief == ReliefForSingleTicket.RELIEF95)
 //				price = 0.25;
-//			else if(relief == Relief.RELIEF100)
+//			else if(relief == ReliefForSingleTicket.RELIEF100)
 //				price = 0.00;
-			else if(relief == Relief.RAILWAYMAN)
+			else if(relief == ReliefForSingleTicket.RAILWAYMAN)
 				price = 1.80;
-//			else if(relief == Relief.DRIVER)
+//			else if(relief == ReliefForSingleTicket.DRIVER)
 //				price = 6.0;
 			else
 				price = 24.00;*/
 
-			if(relief == Relief.NORMAL/* || relief == 'luggage'*/)
+			if(relief == ReliefForSingleTicket.NORMAL/* || relief == 'luggage'*/)
 				price = 5.50;
-			else if(relief == Relief.RELIEF33)
+			else if(relief == ReliefForSingleTicket.RELIEF33)
 				price = 3.69;
-			else if(relief == Relief.RELIEF37)
+			else if(relief == ReliefForSingleTicket.RELIEF37)
 				price = 3.47;
-			else if(relief == Relief.RELIEF49)
+			else if(relief == ReliefForSingleTicket.RELIEF49)
 				price = 2.81;
-			else if(relief == Relief.RELIEF50)
+			else if(relief == ReliefForSingleTicket.RELIEF50)
 				price = 2.75;
-			else if(relief == Relief.RELIEF51)
+			else if(relief == ReliefForSingleTicket.RELIEF51)
 				price = 2.70;
-			else if(relief == Relief.RELIEF78)
+			else if(relief == ReliefForSingleTicket.RELIEF78)
 				price = 1.21;
-			else if(relief == Relief.RELIEF80)
-				price = 2.05;
-//			else if(relief == Relief.RELIEF85)
+//			else if(relief == ReliefForSingleTicket.RELIEF80)
+//				price = 2.05;
+//			else if(relief == ReliefForSingleTicket.RELIEF85)
 //				price = 0.83;
-			else if(relief == Relief.RELIEF93)
+			else if(relief == ReliefForSingleTicket.RELIEF93)
 				price = 0.39;
-//			else if(relief == Relief.RELIEF95)
-//				price = 0.28;
-//			else if(relief == Relief.RELIEF100)
-//				price = 0.00;
-			else if(relief == Relief.RAILWAYMAN)
-				price = 2.05;
+			else if(relief == ReliefForSingleTicket.RELIEF95)
+				price = 0.28;
+			else if(relief == ReliefForSingleTicket.RELIEF100)
+				price = 0.00;
+//			else if(relief == ReliefForSingleTicket.RAILWAYMAN)
+//				price = 2.05;
 //			else if(relief == 'driver')
 //				price = 6.70;
 			else
 				price = 27.50;
 
 		} else if(zone == Zone.ZONE3){
-			/*if(relief == Relief.NORMAL*//* || relief == Relief.LUGGAGE*//*)
+			/*if(relief == ReliefForSingleTicket.NORMAL*//* || relief == ReliefForSingleTicket.LUGGAGE*//*)
 				price = 7.00;
-			else if(relief == Relief.RELIEF33)
+			else if(relief == ReliefForSingleTicket.RELIEF33)
 				price = 4.70;
-			else if(relief == Relief.RELIEF37)
+			else if(relief == ReliefForSingleTicket.RELIEF37)
 				price = 4.40;
-			else if(relief == Relief.RELIEF49)
+			else if(relief == ReliefForSingleTicket.RELIEF49)
 				price = 3.60;
-			else if(relief == Relief.RELIEF50)
+			else if(relief == ReliefForSingleTicket.RELIEF50)
 				price = 3.50;
-			else if(relief == Relief.RELIEF51)
+			else if(relief == ReliefForSingleTicket.RELIEF51)
 				price = 3.43;
-//			else if(relief == Relief.RELIEF70)
+//			else if(relief == ReliefForSingleTicket.RELIEF70)
 //				price = 2.10;
-			else if(relief == Relief.RELIEF78)
+			else if(relief == ReliefForSingleTicket.RELIEF78)
 				price = 1.50;
-			else if(relief == Relief.RELIEF80)
+			else if(relief == ReliefForSingleTicket.RELIEF80)
 				price = 1.80;
-//			else if(relief == Relief.RELIEF85)
+//			else if(relief == ReliefForSingleTicket.RELIEF85)
 //				price = 1.10;
-			else if(relief == Relief.RELIEF93)
+			else if(relief == ReliefForSingleTicket.RELIEF93)
 				price = 0.49;
-//			else if(relief == Relief.RELIEF95)
+//			else if(relief == ReliefForSingleTicket.RELIEF95)
 //				price = 0.35;
-//			else if(relief == Relief.RELIEF100)
+//			else if(relief == ReliefForSingleTicket.RELIEF100)
 //				price = 0.00;
-			else if(relief == Relief.RAILWAYMAN)
+			else if(relief == ReliefForSingleTicket.RAILWAYMAN)
 				price = 1.80;
-//			else if(relief == Relief.DRIVER)
+//			else if(relief == ReliefForSingleTicket.DRIVER)
 //				price = 8.0;
 			else
 				price = 35.00;*/
 
-			if(relief == Relief.NORMAL /* || relief == 'luggage'*/)
+			if(relief == ReliefForSingleTicket.NORMAL /* || relief == 'luggage'*/)
 				price = 8.00;
-			else if(relief == Relief.RELIEF33)
+			else if(relief == ReliefForSingleTicket.RELIEF33)
 				price = 5.36;
-			else if(relief == Relief.RELIEF37)
+			else if(relief == ReliefForSingleTicket.RELIEF37)
 				price = 5.04;
-			else if(relief == Relief.RELIEF49)
+			else if(relief == ReliefForSingleTicket.RELIEF49)
 				price = 4.08;
-			else if(relief == Relief.RELIEF50)
+			else if(relief == ReliefForSingleTicket.RELIEF50)
 				price = 4.00;
-			else if(relief == Relief.RELIEF51)
+			else if(relief == ReliefForSingleTicket.RELIEF51)
 				price = 3.92;
-			else if(relief == Relief.RELIEF78)
+			else if(relief == ReliefForSingleTicket.RELIEF78)
 				price = 1.76;
-			else if(relief == Relief.RELIEF80)
-				price = 2.05;
-//			else if(relief == Relief.RELIEF85)
+//			else if(relief == ReliefForSingleTicket.RELIEF80)
+//				price = 2.05;
+//			else if(relief == ReliefForSingleTicket.RELIEF85)
 //				price = 1.20;
-			else if(relief == Relief.RELIEF93)
+			else if(relief == ReliefForSingleTicket.RELIEF93)
 				price = 0.56;
-//			else if(relief == Relief.RELIEF95)
-//				price = 0.40;
-//			else if(relief == Relief.RELIEF100)
-//				price = 0.00;
-			else if(relief == Relief.RAILWAYMAN)
-				price = 2.05;
+			else if(relief == ReliefForSingleTicket.RELIEF95)
+				price = 0.40;
+			else if(relief == ReliefForSingleTicket.RELIEF100)
+				price = 0.00;
+//			else if(relief == ReliefForSingleTicket.RAILWAYMAN)
+//				price = 2.05;
 //			else if(relief == 'driver')
 //				price = 9;
 			else
