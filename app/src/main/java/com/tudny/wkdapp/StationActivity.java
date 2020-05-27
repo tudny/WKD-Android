@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.picasso.Picasso;
 import com.tudny.wkdapp.core.Station;
+import com.tudny.wkdapp.location.NavigationManager;
 import com.tudny.wkdapp.ui.stations.StationsFragment;
 
 import org.jsoup.Jsoup;
@@ -73,6 +74,9 @@ public class StationActivity extends AppCompatActivity {
 		} catch (Exception e){
 			Log.e(DEBUG_TAG, e.getMessage(), e);
 		}
+
+		final Button button = findViewById(R.id.navigate_button);
+		button.setOnClickListener(view -> NavigationManager.openNavigation(station.getLatitude(), station.getLongitude(), this));
 	}
 
 	@Override

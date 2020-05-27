@@ -75,7 +75,7 @@ public class RouteActivity extends AppCompatActivity implements RouteRecyclerAda
 				.create();
 		Route route = gson.fromJson(json, Route.class);
 
-		Log.d(DEBUG_TAG, "Loaded route: " + route);
+		Log.d(DEBUG_TAG, "Loaded route: " + route.toString().substring(0, 100) + "...");
 
 		setupRecycler(route);
 	}
@@ -90,7 +90,7 @@ public class RouteActivity extends AppCompatActivity implements RouteRecyclerAda
 
 	private void setupRecycler(Route route) {
 
-		Log.d(DEBUG_TAG, "Setting up route recycler view: " + route);
+		Log.d(DEBUG_TAG, "Setting up route recycler view: " + route.toString().substring(0, 100) + "...");
 
 		RecyclerView recyclerView = findViewById(R.id.route_recycler_view);
 		LinearLayoutManager llm = new LinearLayoutManager(this);

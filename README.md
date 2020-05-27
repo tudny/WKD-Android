@@ -4,7 +4,7 @@
 It is designed to help users in daily situations.
 
 Latest version:
-**3.0-stable**
+**3.2-alpha**
 
 ## Features
 - Schedule tool (with whole route)

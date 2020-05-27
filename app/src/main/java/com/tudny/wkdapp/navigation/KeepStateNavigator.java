@@ -2,7 +2,9 @@ package com.tudny.wkdapp.navigation;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -14,8 +16,12 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigator;
 import androidx.navigation.fragment.FragmentNavigator;
 
+import com.tudny.wkdapp.MainActivity;
+
 @Navigator.Name("fragment")
 public class KeepStateNavigator extends FragmentNavigator {
+
+	public static final String DEBUG_TAG = KeepStateNavigator.class.getSimpleName();
 
 	private FragmentManager manager;
 	private int containerId;
@@ -55,6 +61,14 @@ public class KeepStateNavigator extends FragmentNavigator {
 		transaction.setPrimaryNavigationFragment(fragment);
 		transaction.setReorderingAllowed(true);
 		transaction.commitNow();
+
+		try {
+			((MainActivity)fragment.getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+			((MainActivity)fragment.getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
+			((MainActivity)fragment.getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 
 		if(initialNavigate) {
 			return destination;

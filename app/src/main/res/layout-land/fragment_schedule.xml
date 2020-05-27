@@ -77,26 +77,84 @@
 					android:layout_height="wrap_content"
 					android:hint="@string/date" />
 			</com.google.android.material.textfield.TextInputLayout>
+
+			<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="4dp">
+
+				<TextView
+					android:id="@+id/ticket_text_view"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="12dp"
+					android:text="@string/ticket_price_s"
+					android:textColor="@android:color/white"
+					app:layout_constraintBottom_toBottomOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintEnd_toStartOf="@id/now_button"
+					android:visibility="invisible"
+					android:ellipsize="none"
+					android:scrollHorizontally="false"
+					android:maxLines="3"
+					android:textSize="18sp"
+					app:layout_constraintHorizontal_bias="0"/>
+
+				<Button
+					android:id="@+id/search_button"
+					style="@style/Widget.AppCompat.Button.Colored"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="end"
+
+					android:background="@drawable/view_shade_button"
+					android:text="@string/search"
+					android:textSize="16sp"
+					app:layout_constraintBottom_toBottomOf="parent"
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					android:layout_margin="4dp"/>
+
+				<Button
+					android:id="@+id/now_button"
+					style="@style/Widget.AppCompat.Button.Colored"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="end"
+
+					android:background="@drawable/view_shade_button"
+					android:text="@string/now"
+					android:textSize="16sp"
+					app:layout_constraintBottom_toBottomOf="parent"
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintEnd_toStartOf="@id/search_button"
+					android:layout_margin="4dp"/>
+
+			</androidx.constraintlayout.widget.ConstraintLayout>
 		</LinearLayout>
 
-		<androidx.recyclerview.widget.RecyclerView
-			android:id="@+id/recycleList"
+		<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:layout_marginStart="0dp"
-			android:layout_marginEnd="0dp"
-			android:layoutAnimation="@anim/layout_animation_fall_down" />
-	</LinearLayout>
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			android:layout_weight="1">
 
-	<com.google.android.material.floatingactionbutton.FloatingActionButton
-		android:id="@+id/searchButton"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_margin="@dimen/fab_margin"
-		app:backgroundTint="@color/logo_red"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:srcCompat="@drawable/ic_search_white_24dp" />
+			<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/recycleList"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="0dp"
+				android:layout_marginEnd="0dp"
+				android:layoutAnimation="@anim/layout_animation_fall_down" />
+
+			<include
+				android:id="@+id/no_train_message"
+				layout="@layout/no_train_layout"
+				android:visibility="invisible"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

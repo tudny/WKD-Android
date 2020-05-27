@@ -149,6 +149,35 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		}
 	}
 
+	@Override
+	public void onSaveInstanceState(@NonNull Bundle outState) {
+		final Integer fromStationId = fromStation.getStationNumber();
+		final Integer toStationId = toStation.getStationNumber();
+		final String date = localDate.format(dateFormatter);
+		final String time = localTime.format(timeFormatter);
+		outState.putInt(FROM_STATION_KEY, fromStationId);
+		outState.putInt(TO_STATION_KEY, toStationId);
+		outState.putString(DATE_KEY, date);
+		outState.putString(TIME_KEY, time);
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+		try {
+			final Integer fromStationId = savedInstanceState.getInt(FROM_STATION_KEY);
+			final Integer toStationId = savedInstanceState.getInt(TO_STATION_KEY);
+			final String date = savedInstanceState.getString(DATE_KEY);
+			final String time = savedInstanceState.getString(TIME_KEY);
+			setFromStation(Station.choseByNumber(fromStationId));
+			setToStation(Station.choseByNumber(toStationId));
+			setLocalDate(LocalDate.parse(date, dateFormatter));
+			setLocalTime(LocalTime.parse(time, timeFormatter));
+		} catch (Exception ignored){}
+
+		super.onViewStateRestored(savedInstanceState);
+	}
+
 	private void setupAll() {
 		loadDefaultValues();
 
@@ -345,6 +374,8 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		inputTo.setText(stationAsString);
 		inputTo.setKeyListener(null);
 		clearFocus();
+
+		checkIcon(inputTo, to);
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -409,6 +440,8 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		clearFocus();
 	}
 
+		checkIcon(inputFrom, from);
+	}
 
 	private void setupVibration(){
 		singleClickVibration = (Vibrator) Objects.requireNonNull(getActivity()).getSystemService(Context.VIBRATOR_SERVICE);
@@ -465,7 +498,9 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
 		wkdApi = new WKDApi(schedule -> {
 			updateRecyclerView(schedule, Boolean.TRUE);
+			updateTicket(schedule);
 			savedSchedule = schedule;
+			setupReloader();
 			Toast.makeText(getContext(), schedule.getInfo().toPrintString(), Toast.LENGTH_SHORT).show();
 		}, error -> {
 			if(error instanceof TimeoutError)
@@ -477,22 +512,30 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		});
 	}
 
-	private void setupFAB(View view){
-		FloatingActionButton fab = view.findViewById(R.id.searchButton);
-		fab.setOnClickListener(viewTemp -> {
-
+	private void setupSearchAndNow(View view){
+		View.OnClickListener onClickListener = view_temp -> {
 			String message;
-			if(makeRequest()){
+			if (makeRequest()) {
 				message = getString(R.string.searching);
 			} else {
 				message = getString(R.string.bad_input);
 			}
 
 			Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+		};
+
+		Button button = view.findViewById(R.id.search_button);
+		button.setOnClickListener(onClickListener);
+
+		final Button nowButton = view.findViewById(R.id.now_button);
+		nowButton.setOnClickListener(view1 -> {
+			setLocalDate(LocalDate.now());
+			setLocalTime(LocalTime.now());
+			makeVibration(vibrationDurationForClick);
 		});
 	}
 
-	private boolean makeRequest() {
+	private boolean makeRequest(){
 		if(fromStation.equals(toStation) || !Station.canConnect(fromStation, toStation)){
 			return false;
 		}
@@ -510,52 +553,97 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 		 * Checking if there is any route available
 		 * */
 
-		if(schedule.getRoute().size() == 0) {
-			RowModel rowModel = new RowModel(getString(R.string.no_train_left), "");
-			listValues.add(rowModel);
-		} else {
-			RowModel rowModel = new RowModel(getString(R.string.dep_at), getString(R.string.dep_in));
-			listValues.add(rowModel);
-		}
+		try {
 
-		for(Route route : schedule.getRoute()){
-			LocalTime arr = route.getArrival();
-
-			LocalDateTime arrFull = LocalDateTime.of(localDate, arr);
-			LocalDateTime now = LocalDateTime.now();
-
-			int minutes = Math.toIntExact(now.until(arrFull, ChronoUnit.MINUTES));
-
-			int h = minutes / 60;
-			int m = minutes;
-
-			String display = "";
-			if(m < 0){
-				display = getString(R.string.to_late);
-			} else if(m == 0){
-				display = getString(R.string.departures);
+			final TextView ticketTextView = getView().findViewById(R.id.ticket_text_view);
+			final ConstraintLayout message = getView().findViewById(R.id.no_train_message);
+			if (schedule.getRoute().size() == 0) {
+				message.setVisibility(View.VISIBLE);
+				ticketTextView.setVisibility(View.INVISIBLE);
 			} else {
-				m -= h * 60;
-
-				if(h > 0){
-					display = display + " " + h + getString(R.string.h);
-				}
-
-				if(m > 0){
-					display = display + " " + m + getString(R.string.m);
-				}
+				message.setVisibility(View.INVISIBLE);
+				ticketTextView.setVisibility(View.VISIBLE);
 			}
 
-			RowModel rowModel = new RowModel(arr.format(((MainActivity) Objects.requireNonNull(getActivity())).getTimeFormatter()), display);
-			listValues.add(rowModel);
+			for (Route route : schedule.getRoute()) {
+				LocalTime arr = route.getArrival();
+
+				LocalDateTime arrFull = LocalDateTime.of(localDate, arr);
+				LocalDateTime now = LocalDateTime.now();
+
+				int minutes = Math.toIntExact(now.until(arrFull, ChronoUnit.MINUTES));
+
+				int h = minutes / 60;
+				int m = minutes;
+
+				String display = "";
+				if (m < 0) {
+					display = getString(R.string.to_late);
+				} else if (m == 0) {
+					display = getString(R.string.departures);
+				} else {
+					m -= h * 60;
+
+					if (h > 0) {
+						display = display + " " + h + getString(R.string.h);
+					}
+
+					if (m > 0) {
+						display = display + " " + m + getString(R.string.m);
+					}
+				}
+
+				String station = route.getIntermediateStations().get(route.getIntermediateStations().size() - 1).getName();
+				String trainNumber = route.getSymbol();
+
+				RowModel rowModel = new RowModel(arr.format(((MainActivity) Objects.requireNonNull(getActivity())).getTimeFormatter()), display, station, trainNumber);
+				listValues.add(rowModel);
+			}
+
+			RecyclerView recyclerView = Objects.requireNonNull(getView()).findViewById(R.id.recycleList);
+			try {
+				((ScheduleRecyclerAdapter) Objects.requireNonNull(recyclerView.getAdapter())).updateItems(listValues, schedule, playAnimation);
+			} catch (NullPointerException e) {
+				Log.e(DEBUG_TAG, "Sth went wrong! " + e.getMessage() + " at " + Arrays.toString(e.getStackTrace()));
+			}
+		} catch (Exception e) {
+			Log.e(DEBUG_TAG, "updateRecyclerView: " + e.getMessage());
+		}
+	}
+
+	private void updateTicket(Schedule schedule){
+		StationOnRoute startStation = null;
+		StationOnRoute endStation = null;
+		for(StationOnRoute station : schedule.getRoute().get(0).getIntermediateStations()){
+			if(station.getActive() && startStation == null){
+				startStation = station;
+			} else if(station.getActive() && endStation == null){
+				endStation = station;
+			}
+		}
+		long timeDiff;
+		if(startStation == null || endStation == null) timeDiff = -1;
+		else {
+			if(startStation.getDeparture().isAfter(endStation.getArrival())){
+				LocalDateTime startTemp = LocalDateTime.of(LocalDate.of(2000, 1, 1), startStation.getDeparture());
+				LocalDateTime endTemp = LocalDateTime.of(LocalDate.of(2000, 1, 2), endStation.getArrival());
+				timeDiff = startTemp.until(endTemp, ChronoUnit.MINUTES);
+			} else {
+				timeDiff = startStation.getDeparture().until(endStation.getArrival(), ChronoUnit.MINUTES);
+			}
 		}
 
-		RecyclerView recyclerView = Objects.requireNonNull(getView()).findViewById(R.id.recycleList);
-		try{
-			((ScheduleRecyclerAdapter) Objects.requireNonNull(recyclerView.getAdapter())).updateItems(listValues, schedule, playAnimation);
-		} catch (NullPointerException e){
-			Log.e(DEBUG_TAG, "Sth went wrong! " + e.getMessage() + " at " + Arrays.toString(e.getStackTrace()));
-		}
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		Integer reliefNr = Integer.parseInt(sharedPreferences.getString(getString(R.string.default_relief_key), "0"));
+
+		WKDTickets.ReliefForSingleTicket relief = WKDTickets.ReliefForSingleTicket.findReliefByType(reliefNr); //WKDTickets.Relief.NORMAL;
+		Double ticketValue = WKDTickets.singleTicket(WKDTickets.Zone.findZoneByTime((int) timeDiff), relief);
+
+		Log.d(DEBUG_TAG, "Ticket: " + ticketValue + " | Time: " + timeDiff);
+
+		final TextView ticketTextView = getView().findViewById(R.id.ticket_text_view);
+		ticketTextView.setText(getString(R.string.ticket_price_s, ticketValue));
+		ticketTextView.setVisibility(View.VISIBLE);
 	}
 
 	private static final class LocalTimeAdapter extends TypeAdapter<LocalTime> {
@@ -572,8 +660,6 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 
 	@Override
 	public void onItemClick(View view, int position) {
-		// header :(
-		position--;
 
 		try {
 			Log.d(DEBUG_TAG, "Clicked: " + adapter.getItem(position) + " on " + position);
@@ -595,6 +681,24 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerAdapte
 			}
 			e.printStackTrace();
 		}
+	}
+
+	private void checkIcon(TextInputEditText inputTextView, Station station) {
+		try {
+			assert getContext() != null;
+
+			Drawable drawable;
+			if (station == defaultFromStation) {
+				drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_home_white_24dp);
+			} else if(station == defaultToStation) {
+				drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_flag_white_24dp);
+			} else {
+				drawable = null;
+			}
+
+			inputTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
+
+		} catch (Exception ignored){}
 	}
 
 	private void setupReloader() {

@@ -10,6 +10,7 @@
 		android:id="@+id/scrollViewTop"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:orientation="vertical"
 		android:scrollbars="none">
 
 		<LinearLayout
@@ -18,130 +19,173 @@
 			android:orientation="vertical">
 
 			<TextView
+				android:id="@+id/season_ticket_view"
 				style="@style/TicketsDividerLayout"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/season_ticket_finder_label" />
 
-			<com.google.android.material.textfield.TextInputLayout
-				android:paddingTop="10dp"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:textColorHint="@color/logo_blue" >
+				<LinearLayout
+					android:id="@+id/season_ticket_layout"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:orientation="vertical"
+					android:visibility="gone"
+					android:animateLayoutChanges="true">
 
-				<com.google.android.material.textfield.TextInputEditText
-					android:id="@+id/inputFrom"
-					style="@style/MyTextInputWhite"
+				<com.google.android.material.textfield.TextInputLayout
+					android:paddingTop="10dp"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:textColorHint="@color/logo_blue" >
+
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/inputFrom"
+						style="@style/MyTextInputWhite"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/from" />
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<com.google.android.material.textfield.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:textColorHint="@color/logo_blue">
+
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/inputTo"
+						style="@style/MyTextInputWhite"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/to" />
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<com.google.android.material.textfield.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:textColorHint="@color/logo_blue">
+
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/inputTicketType"
+						style="@style/MyTextInputWhite"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/ticket_type" />
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<com.google.android.material.textfield.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:textColorHint="@color/logo_blue">
+
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/inputPeriod"
+						style="@style/MyTextInputWhite"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/period" />
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<com.google.android.material.textfield.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:textColorHint="@color/logo_blue">
+
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/inputRelief"
+						style="@style/MyTextInputWhite"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/relief" />
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<com.google.android.material.textfield.TextInputLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:textColorHint="@color/logo_blue">
+
+					<com.google.android.material.textfield.TextInputEditText
+						android:id="@+id/inputDirection"
+						style="@style/MyTextInputWhite"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/direction" />
+
+				</com.google.android.material.textfield.TextInputLayout>
+
+				<View
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:hint="@string/from" />
-			</com.google.android.material.textfield.TextInputLayout>
+					android:background="@drawable/custom_divider_horizontal" />
 
-			<com.google.android.material.textfield.TextInputLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:textColorHint="@color/logo_blue">
-
-				<com.google.android.material.textfield.TextInputEditText
-					android:id="@+id/inputTo"
-					style="@style/MyTextInputWhite"
+				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:hint="@string/to" />
-			</com.google.android.material.textfield.TextInputLayout>
+					android:orientation="horizontal">
 
-			<com.google.android.material.textfield.TextInputLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:textColorHint="@color/logo_blue">
+					<TextView
+						android:id="@+id/price_textView"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_margin="10dp"
+						android:layout_weight="1"
+						android:text="@string/price"
+						android:textColor="@color/logo_blue"
+						android:textSize="20sp"
+						android:textStyle="bold"
+						android:layout_gravity="center"/>
 
-				<com.google.android.material.textfield.TextInputEditText
-					android:id="@+id/inputTicketType"
-					style="@style/MyTextInputWhite"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:hint="@string/ticket_type" />
-			</com.google.android.material.textfield.TextInputLayout>
+					<Button
+						android:id="@+id/search_button"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/search"
+						style="@style/Widget.AppCompat.Button.Colored"
+						android:layout_gravity="center"
+						android:gravity="center"
+						android:background="@drawable/view_shade_button"
+						android:layout_margin="4dp"/>
 
-			<com.google.android.material.textfield.TextInputLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:textColorHint="@color/logo_blue">
+				</LinearLayout>
 
-				<com.google.android.material.textfield.TextInputEditText
-					android:id="@+id/inputPeriod"
-					style="@style/MyTextInputWhite"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:hint="@string/period" />
-			</com.google.android.material.textfield.TextInputLayout>
 
-			<com.google.android.material.textfield.TextInputLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:textColorHint="@color/logo_blue">
-
-				<com.google.android.material.textfield.TextInputEditText
-					android:id="@+id/inputRelief"
-					style="@style/MyTextInputWhite"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:hint="@string/relief" />
-			</com.google.android.material.textfield.TextInputLayout>
-
-			<com.google.android.material.textfield.TextInputLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:textColorHint="@color/logo_blue">
-
-				<com.google.android.material.textfield.TextInputEditText
-					android:id="@+id/inputDirection"
-					style="@style/MyTextInputWhite"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:hint="@string/direction" />
-
-			</com.google.android.material.textfield.TextInputLayout>
-
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@drawable/custom_divider_horizontal" />
+			</LinearLayout>
 
 			<TextView
-				android:id="@+id/price_textView"
-				android:layout_width="match_parent"
-				android:layout_height="0dp"
-				android:layout_margin="10dp"
-				android:layout_weight="1"
-				android:text="@string/price"
-				android:textColor="@color/logo_blue"
-				android:textSize="20sp"
-				android:textStyle="bold" />
-
-			<TextView
+				android:id="@+id/single_ticket_view"
 				style="@style/TicketsDividerLayout"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="@string/single_tickets_table_label" />
 
-			<androidx.recyclerview.widget.RecyclerView
-				android:id="@+id/ticketsRecyclerView"
+			<LinearLayout
+				android:id="@+id/single_ticket_layout"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layoutAnimation="@anim/layout_animation_fall_down"
-				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintHorizontal_bias="0.5"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent"
-				app:layout_constraintVertical_bias="0" />
+				android:layout_height="match_parent"
+				android:orientation="vertical"
+				android:visibility="gone"
+				android:animateLayoutChanges="true">
+
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/ticketsRecyclerView"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layoutAnimation="@anim/layout_animation_fall_down"
+					app:layout_constraintBottom_toBottomOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintHorizontal_bias="0.5"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintVertical_bias="0" />
+
+			</LinearLayout>
 
 		</LinearLayout>
 
 	</ScrollView>
 
-	<com.google.android.material.floatingactionbutton.FloatingActionButton
+	<!--<com.google.android.material.floatingactionbutton.FloatingActionButton
+		android:visibility="invisible"
 		android:id="@+id/search_fab"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -150,6 +194,6 @@
 		android:backgroundTint="@color/logo_red"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
-		app:srcCompat="@drawable/ic_search_white_24dp" />
+		app:srcCompat="@drawable/ic_search_white_24dp" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,7 @@
 <resources>
 	<color name="colorPrimary">#004B85</color>
 	<color name="colorPrimaryDark">#003966</color>
-	<color name="colorAccent">#E10A85B6</color>
+	<color name="colorAccent">#006DA7</color>
 
 	<color name="colorBackground">#005C96</color>
 
@@ -15,4 +15,7 @@
 	<color name="line_color_inactive">#5BB8FF</color>
 
 	<color name="wallet_holo_blue_light">#ff33b5e5</color>
+	<color name="grey">#DBDBDB</color>
+	<color name="grey_darker">#ACACAC</color>
+	<color name="greyish">#ECECEC</color>
 </resources>
