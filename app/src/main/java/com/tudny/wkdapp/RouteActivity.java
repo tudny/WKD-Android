@@ -1,5 +1,15 @@
 package com.tudny.wkdapp;
 
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -9,6 +19,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +49,7 @@ public class RouteActivity extends AppCompatActivity implements RouteRecyclerAda
 	private static final DateTimeFormatter time12FormatterNewLine = DateTimeFormatter.ofPattern("hh:mm\na");
 
 	private RouteRecyclerAdapter adapter;
+	private Route route;
 
 	@Override
 	public void onItemClick(View view, int position) {
@@ -74,7 +87,7 @@ public class RouteActivity extends AppCompatActivity implements RouteRecyclerAda
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
 				.create();
-		Route route = gson.fromJson(json, Route.class);
+		route = gson.fromJson(json, Route.class);
 
 		Log.d(DEBUG_TAG, "Loaded route: " + route.toString().substring(0, 100) + "...");
 
@@ -86,11 +99,42 @@ public class RouteActivity extends AppCompatActivity implements RouteRecyclerAda
 		if(item.getItemId() == android.R.id.home){
 			finish();
 		} else if(item.getItemId() == R.id.follow_option) {
-			// TODO Following
+			createNotification();
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
+
+	public static final String CHANNEL_ID = "channel_id_tudny_xd";
+	private static final Integer Notification_ID = 2010;
+
+	private void createNotification() {
+
+		try {
+
+			String departureTimeString = getTimeFormatter().format(route.getDeparture());
+			String departuresFrom = route.getIntermediateStations().stream().filter(StationOnRoute::getActive).findFirst().orElseThrow(Exception::new).getName();
+
+
+			Intent intent = new Intent(this, AlertDialog.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+					.setSmallIcon(R.drawable.ic_wkd_icon_large)
+					.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_wkd_icon_large))
+					.setContentTitle(getString(R.string.follow_train_title_notification))
+					.setContentText(getString(R.string.notification_text_train, departureTimeString, departuresFrom))
+					.setContentIntent(pendingIntent)
+					.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+
+			NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+			notificationManager.notify(Notification_ID, builder.build());
+
+		} catch (Exception ignored){ }
+	}
+
 
 
 

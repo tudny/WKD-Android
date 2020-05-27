@@ -100,5 +100,9 @@
 	<string name="relief_title">Show ticket price</string>
 	<string name="show_relief_summary">Displays single-use ticket price on main screen</string>
 	<string name="follow">Follow</string>
+	<string name="channel_name">notification_channel_name_simple</string>
+	<string name="channel_description">notification_channel_description_simple</string>
+	<string name="follow_train_title_notification">Following train</string>
+	<string name="notification_text_train">%s | %s</string>
 
 </resources>

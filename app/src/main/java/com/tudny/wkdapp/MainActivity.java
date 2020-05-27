@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
 	public static void setGoodTitle(Fragment fragment, Integer stringId) {
 		try {
-			Objects.requireNonNull(((MainActivity) Objects.requireNonNull(fragment.getActivity())).getSupportActionBar()).setTitle(fragment.getString(stringId));
+			Objects.requireNonNull(((MainActivity) fragment.requireActivity()).getSupportActionBar()).setTitle(fragment.getString(stringId));
 		} catch (NullPointerException e){
 			e.printStackTrace();
 		}
