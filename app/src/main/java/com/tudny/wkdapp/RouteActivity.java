@@ -3,6 +3,7 @@ package com.tudny.wkdapp;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -84,9 +85,22 @@ public class RouteActivity extends AppCompatActivity implements RouteRecyclerAda
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		if(item.getItemId() == android.R.id.home){
 			finish();
+		} else if(item.getItemId() == R.id.follow_option) {
+			// TODO Following
 		}
+
 		return super.onOptionsItemSelected(item);
 	}
+
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.route_menu,menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+
 
 	private void setupRecycler(Route route) {
 

@@ -99,5 +99,6 @@
 	<string name="show_relief_key">show_relief_key_preferences</string>
 	<string name="relief_title">Show ticket price</string>
 	<string name="show_relief_summary">Displays single-use ticket price on main screen</string>
+	<string name="follow">Follow</string>
 
 </resources>
