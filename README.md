@@ -29,4 +29,4 @@ Just download the latest .apk file *(app-debugvX.X.X.apk, where X.X.X is the lat
 and install on your mobile device. Works only on **Android** devices with minimal version of **Android 8.0 (Oreo)**
 
 ## Known issues
-- ~~Double Dialog error on some devices~~ solved thanks to tests by <Username>
+- ~~Double Dialog error on some devices~~ solved thanks to tests by [amwms](https://github.com/amwms)
