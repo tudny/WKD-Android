@@ -1,4 +1,7 @@
 # WKD application
+## CLOSED
+WKD changed the API, so the app no longer receives JSON files. 
+
 **WKD application** is a compact tool for passengers of
 [Warszawska Kolej Dojazdowa](http://www.wkd.com.pl/) (eng. [Warsaw Commuter Railway](http://www.wkd.com.pl/en/) )
 It is designed to help users in daily situations.
