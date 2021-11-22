@@ -121,8 +121,8 @@ public class RouteActivity extends AppCompatActivity implements RouteRecyclerAda
 			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-					.setSmallIcon(R.drawable.ic_wkd_icon_large)
-					.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_wkd_icon_large))
+					.setSmallIcon(R.drawable.ic_wkd_large_new)
+					.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_wkd_large_new))
 					.setContentTitle(getString(R.string.follow_train_title_notification))
 					.setContentText(getString(R.string.notification_text_train, departureTimeString, departuresFrom))
 					.setContentIntent(pendingIntent)
