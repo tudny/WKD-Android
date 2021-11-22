@@ -1,6 +1,4 @@
 # WKD application
-## CLOSED
-WKD changed the API, so the app no longer receives JSON files. 
 
 ## About
 **WKD application** is a compact tool for passengers of
