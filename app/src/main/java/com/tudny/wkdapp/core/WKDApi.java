@@ -28,7 +28,7 @@ public class WKDApi {
 	private static final DateTimeFormatter timePattern = DateTimeFormatter.ofPattern("HH:mm");
 
 	// WKD server URL
-	private static final String url = "http://wkd.com.pl/rozklad/rozklad.php";
+	private static final String url = "http://archiwum.wkd.com.pl/rozklad/rozklad.php";
 	// Default timeout
 	private static final int SOCKET_TIMEOUT_MS = 2000;
 
@@ -91,6 +91,7 @@ public class WKDApi {
 				params.put("target", targetName);
 				params.put("date", dateString);
 				params.put("from", timeFromString);
+				params.put("to", "23:59");
 
 				return params;
 			}
