@@ -1,5 +1,8 @@
 # WKD application
 
+## Project is archived.
+Due to changes in WKD's API and ongoing works, I will not update the application, as now it may require self maintained API. The schedule tends to change every week, so it would require a lot of work or collaboration with WKD IT. Maybe when time comes... For now, I encourage using http://www.wkd.com.pl/. It was a great experience to learn Android developing this application. 
+
 ## About
 **WKD application** is a compact tool for passengers of
 [Warszawska Kolej Dojazdowa](http://www.wkd.com.pl/) (eng. [Warsaw Commuter Railway](http://www.wkd.com.pl/en/) )
